@@ -10,6 +10,7 @@ def no_color(c):
 def color(c):
 	return c > 0
 
+
 # TAI pos
 # Tuplo (l, c)
 def make_pos(l, c):
@@ -18,6 +19,7 @@ def pos_l(pos):
 	return pos[0]
 def pos_c(pos):
 	return pos[1]
+
 
 # TAI group
 # Lista de pecas adjacentes
@@ -43,6 +45,7 @@ def group_find_adj(board, cor, l, c, adj):
 
 	return adj
 
+
 # TAI board
 # Lista de listas de color
 def board_clone(board):
@@ -56,7 +59,7 @@ def board_print(board):
 		print(line)
 
 def board_is_pos(board, l, c):
-	return 0 <= l < len(board) and 0 <= c < len(board)
+	return 0 <= l < len(board) and 0 <= c < len(board[0])
 
 def board_find_groups(board):
 	new_board = board_clone(board)
@@ -83,16 +86,6 @@ def board_remove_group(board, group):
 
 	return new_board
 
-################################################################################
-# XXX: TEST CODE
-board = [[1,2,2,3,3],[2,2,2,1,3],[1,2,2,2,2],[1,1,1,1,1]]
-groups = board_find_groups(board)
-groups_correct = [[(0,0)],[(0,1),(1,1),(2,1),(2,2),(1,2),(0,2),(2,3),(2,4),(1,0)],[(0,3),(0,4),(1,4)],[(1,3)],[(2,0),(3,0),(3,1),(3,2),(3,3),(3,4)]]
-print(groups)
-print()
-print(groups_correct)
-print(groups == groups_correct)
-################################################################################
 
 # TAI sg_state
 # Classe que contem configuracao de uma board
