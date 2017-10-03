@@ -23,26 +23,23 @@ def pos_c(pos):
 # Lista de pecas adjacentes
 # e.g. group = [(0,1),(1,1),(2,1),(2,2),(1,2),(0,2),(2,3),(2,4),(1,0)]
 def make_group(board, l, c):
-	return group_find_adj(board, l, c, [])
+	return group_find_adj(board, board[l][c], l, c, [])
 
-def group_find_adj(board, l, c, adj):
-	pos = make_pos(l, c)
-	if pos not in adj:
-		adj += [pos]
+def group_find_adj(board, cor, l, c, adj):
+	if board_is_pos(board, l, c) and cor == board[l][c]:
+		pos = make_pos(l, c)
+		if pos not in adj:
+			adj += [pos]
 
-		# deCORando a COR. Get it?
-		cor = board[l][c]
+			# deCORando a COR. Get it?
+			cor = board[l][c]
+			board[l][c] = get_no_color() # marcamos como visitado
 
-		# Verificando pela ordem: sup, inf, esq, dir
-		if l < len(board) and cor == board[l+1][c]:
-			adj = group_find_adj(board, l+1, c, adj)
-		if 0 < l and cor == board[l-1][c]:
-			adj = group_find_adj(board, l-1, c, adj)
-
-		if c < len(board) and cor == board[l][c+1]:
-			adj = group_find_adj(board, l, c+1, adj)
-		if 0 < c and cor == board[l][c-1]:
-			adj = group_find_adj(board, l, c-1, adj)
+			# Verificando pela ordem: sup, inf, esq, dir
+			adj = group_find_adj(board, cor, l+1, c, adj)
+			adj = group_find_adj(board, cor, l-1, c, adj)
+			adj = group_find_adj(board, cor, l, c+1, adj)
+			adj = group_find_adj(board, cor, l, c-1, adj)
 
 	return adj
 
@@ -58,15 +55,18 @@ def board_print(board):
 	for line in board:
 		print(line)
 
+def board_is_pos(board, l, c):
+	return 0 <= l < len(board) and 0 <= c < len(board)
+
 def board_find_groups(board):
+	new_board = board_clone(board)
 	lista_de_grupos = [] # tem que ter tamanho de numero de cores
 
-	b_range = range(len(board))
-
+	b_range = range(len(new_board))
 	for l in b_range:
 		for c in b_range:
-			if color(board[l][c]) and board[l][c]:
-				lista_de_grupos += [make_group(board, l, c)]
+			if color(new_board[l][c]):
+				lista_de_grupos += [make_group(new_board, l, c)]
 			else:
 				continue
 
@@ -89,6 +89,7 @@ board = [[1,2,2,3,3],[2,2,2,1,3],[1,2,2,2,2],[1,1,1,1,1]]
 groups = board_find_groups(board)
 groups_correct = [[(0,0)],[(0,1),(1,1),(2,1),(2,2),(1,2),(0,2),(2,3),(2,4),(1,0)],[(0,3),(0,4),(1,4)],[(1,3)],[(2,0),(3,0),(3,1),(3,2),(3,3),(3,4)]]
 print(groups)
+print()
 print(groups_correct)
 print(groups == groups_correct)
 ################################################################################
