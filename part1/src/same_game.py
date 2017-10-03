@@ -22,22 +22,76 @@ def pos_c(pos):
 # TAI group
 # Lista de pecas adjacentes
 # e.g. group = [(0,1),(1,1),(2,1),(2,2),(1,2),(0,2),(2,3),(2,4),(1,0)]
-def make_group(listas):
-	pass
+def make_group(board, l, c):
+	return group_find_adj(board, l, c, [])
 
+def group_find_adj(board, l, c, adj):
+	pos = make_pos(l, c)
+	if pos not in adj:
+		adj += [pos]
+
+		# deCORando a COR. Get it?
+		cor = board[l][c]
+
+		# Verificando pela ordem: sup, inf, esq, dir
+		if l < len(board) and cor == board[l+1][c]:
+			adj = group_find_adj(board, l+1, c, adj)
+		if 0 < l and cor == board[l-1][c]:
+			adj = group_find_adj(board, l-1, c, adj)
+
+		if c < len(board) and cor == board[l][c+1]:
+			adj = group_find_adj(board, l, c+1, adj)
+		if 0 < c and cor == board[l][c-1]:
+			adj = group_find_adj(board, l, c-1, adj)
+
+	return adj
 
 # TAI board
 # Lista de listas de color
-# e.g. board = [[1,2,2,3,3],[2,2,2,1,3],[1,2,2,2,2],[1,1,1,1,1]]
-#
-# e.g list of groups = [[(0,0)],[(0,1),(1,1),(2,1),(2,2),(1,2),(0,2),(2,3),(2,4),(1,0)], [(0,3),(0,4),(1,4)],[(1,3)],[(2,0),(3,0),(3,1),(3,2),(3,3),(3,4)]]
-#
+def board_clone(board):
+	new_board = []
+	for line in board:
+		new_board += [list(line)]
+	return new_board
+
+def board_print(board):
+	for line in board:
+		print(line)
+
 def board_find_groups(board):
-	pass
+	lista_de_grupos = [] # tem que ter tamanho de numero de cores
+
+	b_range = range(len(board))
+
+	for l in b_range:
+		for c in b_range:
+			if color(board[l][c]) and board[l][c]:
+				lista_de_grupos += [make_group(board, l, c)]
+			else:
+				continue
+
+	return lista_de_grupos
 
 def board_remove_group(board, group):
-	pass
+	new_board = board_clone(board)
 
+	for pos in group:
+		l = pos_l(pos)
+		c = pos_c(pos)
+
+		new_board[l][c] = get_no_color()
+
+	return new_board
+
+################################################################################
+# XXX: TEST CODE
+board = [[1,2,2,3,3],[2,2,2,1,3],[1,2,2,2,2],[1,1,1,1,1]]
+groups = board_find_groups(board)
+groups_correct = [[(0,0)],[(0,1),(1,1),(2,1),(2,2),(1,2),(0,2),(2,3),(2,4),(1,0)],[(0,3),(0,4),(1,4)],[(1,3)],[(2,0),(3,0),(3,1),(3,2),(3,3),(3,4)]]
+print(groups)
+print(groups_correct)
+print(groups == groups_correct)
+################################################################################
 
 # TAI sg_state
 # Classe que contem configuracao de uma board
