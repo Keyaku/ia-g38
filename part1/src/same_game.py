@@ -109,10 +109,11 @@ def board_shift_down(board, l, c):
 
 
 def board_shift_left(board, l, c):
-	if board_is_position(board, l, c-1) and no_color(board[l][c-1]):
-		board[l][c] = board[l][c-1]
-		board[l][c-1] = get_no_color()
-		board = board_shift_left(board, l, c-1)
+	if board_is_position(board, l, c+1):
+		if no_color(board[l][c]):
+			board[l][c] = board[l][c+1]
+			board[l][c+1] = get_no_color()
+		board = board_shift_left(board, l, c+1)
 
 	return board
 
@@ -129,8 +130,7 @@ def board_remove_group(board, group):
 
 		# shifting
 		new_board = board_shift_down(new_board, l, c)
-
-	new_board = board_shift_left(new_board, l, c)
+		new_board = board_shift_left(new_board, l, c)
 
 	return new_board
 
