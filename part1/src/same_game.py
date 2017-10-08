@@ -43,7 +43,7 @@ def make_group(board, l, c):
 
 def group_find_adj(board, cor, l, c, adj):
 
-	if board_is_pos(board, l, c) and cor == board[l][c]:
+	if board_is_position(board, l, c) and cor == board[l][c]:
 
 		pos = make_pos(l, c)
 
@@ -79,7 +79,7 @@ def board_print(board):
 		print(line)
 
 
-def board_is_pos(board, l, c):
+def board_is_position(board, l, c):
 	return 0 <= l < len(board) and 0 <= c < len(board[0])
 
 
@@ -116,7 +116,14 @@ def board_remove_group(board, group):
 
 # TAI sg_state
 # Classe que contem configuracao de uma board
-# TODO
+class sg_state():
+	__slot__ = ['board']
+	def __init__(self, board):
+		self.board = board
+		# TODO: complete this
+
+	def __lt__(self, o_state):
+		pass # TODO: compare this state with o_state
 
 # TAI same_game
 class same_game(Problem):
