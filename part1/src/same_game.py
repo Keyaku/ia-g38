@@ -94,8 +94,6 @@ def board_find_groups(board):
 
 			if color(new_board[l][c]):
 				lista_de_grupos += [make_group(new_board, l, c)]
-			else:
-				continue
 
 	return lista_de_grupos
 
