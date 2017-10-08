@@ -42,7 +42,8 @@ def make_group(board, l, c):
 
 
 def group_find_adj(board, cor, l, c, adj):
-	if board_is_pos(board, l, c) and cor == board[l][c]:
+
+	if board_is_position(board, l, c) and cor == board[l][c]:
 
 		pos = make_pos(l, c)
 
@@ -78,7 +79,7 @@ def board_print(board):
 		print(line)
 
 
-def board_is_pos(board, l, c):
+def board_is_position(board, l, c):
 	return 0 <= l < len(board) and 0 <= c < len(board[0])
 
 
@@ -86,36 +87,97 @@ def board_find_groups(board):
 	new_board = board_clone(board)
 	lista_de_grupos = []  # tem que ter tamanho de numero de cores
 
-	b_range = range(len(new_board))
+	l_range = range(len(new_board))
+	c_range = range(len(new_board[0]))
 
-	for l in b_range:
-		for c in b_range:
+	for l in l_range:
+		for c in c_range:
 
 			if color(new_board[l][c]):
 				lista_de_grupos += [make_group(new_board, l, c)]
-			else:
-				continue
 
 	return lista_de_grupos
+
+
+def board_shift_down(board, l, c):
+	if board_is_position(board, l-1, c) and no_color(board[l][c]):
+		board[l][c] = board[l-1][c]
+		board[l-1][c] = get_no_color()
+		board = board_shift_down(board, l-1, c)
+
+	return board
+
+
+def board_shift_left(board, l, c):
+	if board_is_position(board, l, c-1) and no_color(board[l][c-1]):
+		board[l][c] = board[l][c-1]
+		board[l][c-1] = get_no_color()
+		board = board_shift_left(board, l, c-1)
+
+	return board
 
 
 def board_remove_group(board, group):
 	new_board = board_clone(board)
 
+	# Clearing blanks
 	for pos in group:
 		l = pos_l(pos)
 		c = pos_c(pos)
 
 		new_board[l][c] = get_no_color()
 
+		# shifting
+		new_board = board_shift_down(new_board, l, c)
+
+	new_board = board_shift_left(new_board, l, c)
+
 	return new_board
 
+
+# ---------------------------------------------------------------------------
+# XXX: Testing grounds for Boards
+#################################
+# Testing board_find_groups()
+my_board =  [[1,2,2,3,3],[2,2,2,1,3],[1,2,2,2,2],[1,1,1,1,1]]
+board_print(my_board)
+g1 = board_find_groups(my_board)
+g2 = [[(0,0)],[(0,1),(1,1),(2,1),(2,2),(1,2),(0,2),(2,3),(2,4),(1,0)],[(0,3),(0,4),(1,4)],[(1,3)],[(2,0),(3,0),(3,1),(3,2),(3,3),(3,4)]]
+if g1 == g2:
+	print("Worked")
+else:
+	print(g1)
+	print("!=")
+	print(g2)
+
+print("# ---------------------------------------------------------------------------")
+# Testing board_remove_group()
+
+new_board = [[0,0,0,0,0],[0,2,3,3,0],[1,2,1,3,0],[2,2,2,2,0]]
+g3 = [(1,1),(2,1),(3,1),(3,2),(3,3),(3,0)]
+board_print(new_board)
+new_board = board_remove_group(new_board, g3)
+result = [[0,0,0,0,0],[0,0,0,0,0],[0,3,3,0,0],[1,1,3,0,0]]
+print("\nRemoved group:", g3)
+if new_board == result:
+	print("Worked")
+else:
+	board_print(new_board)
+	print("!=")
+	board_print(result)
 
 # ---------------------------------------------------------------------------
 
 # TAI sg_state
 # Classe que contem configuracao de uma board
-# TODO
+class sg_state():
+	__slot__ = ['board']
+	def __init__(self, board):
+		self.board = board
+		# TODO: complete this
+
+	def __lt__(self, o_state):
+		pass # TODO: compare this state with o_state
 
 # TAI same_game
 # Herda da class Problem do ficheiro search.py
