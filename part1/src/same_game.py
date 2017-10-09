@@ -42,7 +42,6 @@ def make_group(board, l, c):
 
 
 def group_find_adj(board, cor, l, c, adj):
-
 	if board_is_position(board, l, c) and cor == board[l][c]:
 
 		pos = make_pos(l, c)
@@ -100,19 +99,19 @@ def board_find_groups(board):
 
 
 def board_shift_down(board, l, c):
-	if board_is_position(board, l-1, c) and no_color(board[l][c]):
-		board[l][c] = board[l-1][c]
-		board[l-1][c] = get_no_color()
-		board = board_shift_down(board, l-1, c)
+	if board_is_position(board, l - 1, c) and no_color(board[l][c]):
+		board[l][c] = board[l - 1][c]
+		board[l - 1][c] = get_no_color()
+		board = board_shift_down(board, l - 1, c)
 
 	return board
 
 
 def board_shift_left(board, l, c):
-	if board_is_position(board, l, c-1) and no_color(board[l][c-1]):
-		board[l][c] = board[l][c-1]
-		board[l][c-1] = get_no_color()
-		board = board_shift_left(board, l, c-1)
+	if board_is_position(board, l, c - 1) and no_color(board[l][c - 1]):
+		board[l][c] = board[l][c - 1]
+		board[l][c - 1] = get_no_color()
+		board = board_shift_left(board, l, c - 1)
 
 	return board
 
@@ -127,10 +126,13 @@ def board_remove_group(board, group):
 
 		new_board[l][c] = get_no_color()
 
-		# shifting
+		# primeiro faz-se o shit_down
 		new_board = board_shift_down(new_board, l, c)
 
-	new_board = board_shift_left(new_board, l, c)
+		# no final o shift_left
+	l = len(board)
+	c = len(board[0])
+	new_board = board_shift_left(new_board, l-1, c-1)
 
 	return new_board
 
@@ -139,10 +141,11 @@ def board_remove_group(board, group):
 # XXX: Testing grounds for Boards
 #################################
 # Testing board_find_groups()
-my_board =  [[1,2,2,3,3],[2,2,2,1,3],[1,2,2,2,2],[1,1,1,1,1]]
+my_board = [[1, 2, 2, 3, 3], [2, 2, 2, 1, 3], [1, 2, 2, 2, 2], [1, 1, 1, 1, 1]]
 board_print(my_board)
 g1 = board_find_groups(my_board)
-g2 = [[(0,0)],[(0,1),(1,1),(2,1),(2,2),(1,2),(0,2),(2,3),(2,4),(1,0)],[(0,3),(0,4),(1,4)],[(1,3)],[(2,0),(3,0),(3,1),(3,2),(3,3),(3,4)]]
+g2 = [[(0, 0)], [(0, 1), (1, 1), (2, 1), (2, 2), (1, 2), (0, 2), (2, 3), (2, 4), (1, 0)], [(0, 3), (0, 4), (1, 4)],
+      [(1, 3)], [(2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4)]]
 if g1 == g2:
 	print("Worked")
 else:
@@ -153,11 +156,11 @@ else:
 print("# ---------------------------------------------------------------------------")
 # Testing board_remove_group()
 
-new_board = [[0,0,0,0,0],[0,2,3,3,0],[1,2,1,3,0],[2,2,2,2,0]]
-g3 = [(1,1),(2,1),(3,1),(3,2),(3,3),(3,0)]
+new_board = [[0, 0, 0, 0, 0], [0, 2, 3, 3, 0], [1, 2, 1, 3, 0], [2, 2, 2, 2, 0]]
+g3 = [(1, 1), (2, 1), (3, 1), (3, 2), (3, 3), (3, 0)]
 board_print(new_board)
 new_board = board_remove_group(new_board, g3)
-result = [[0,0,0,0,0],[0,0,0,0,0],[0,3,3,0,0],[1,1,3,0,0]]
+result = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 3, 3, 0, 0], [1, 1, 3, 0, 0]]
 print("\nRemoved group:", g3)
 if new_board == result:
 	print("Worked")
@@ -166,18 +169,22 @@ else:
 	print("!=")
 	board_print(result)
 
+
 # ---------------------------------------------------------------------------
 
 # TAI sg_state
 # Classe que contem configuracao de uma board
 class sg_state():
 	__slot__ = ['board']
+
 	def __init__(self, board):
 		self.board = board
-		# TODO: complete this
+
+	# TODO: complete this
 
 	def __lt__(self, o_state):
-		pass # TODO: compare this state with o_state
+		pass  # TODO: compare this state with o_state
+
 
 # TAI same_game
 # Herda da class Problem do ficheiro search.py
@@ -185,38 +192,42 @@ class same_game(Problem):
 	"""Models a Same Game problem as a satisfaction problem.
 	A solution cannot have pieces left on the board."""
 
-	#Recebe o estado inicial = board e o problem recebia um goal state tambem
-	#Adicionei um goal state tambem
+	# Recebe o estado inicial = board e o problem recebia um goal state tambem
+	# Adicionei um goal state tambem
 	def __init__(self, board):
-		#self.initial = board
-		#self.goal = []
-		pass
+		self.initial = board
+		self.goal = []
 
 	def actions(self, state):
 		"""Return the actions that can be executed in the given
 		state. The result would typically be a list, but if there are
 		many actions, consider yielding them one at a time in an
 		iterator, rather than building them all at once."""
+
+		'''Uma accao deve ser um grupo de pecas a remover com uma cardinalidade maior ou igual a
+		dois, na representacao definida acima.'''
+
 		all_actions = board_find_groups(state)
-		#delete the group of pieces with only one piece
-		for group in all_actions:
-			pass
+
+		# delete the group of pieces with only one piece
+		actions = list(filter(lambda lst: len(lst) > 1, all_actions))
+
+		return actions
 
 	def result(self, state, action):
 		"""Return the state that results from executing the given
 		action in the given state. The action must be one of
 		self.actions(state)."""
-
-		pass
+		result = board_remove_group(state, action)
+		return result 
 
 	def goal_test(self, state):
 		"""Return True if the state is a goal. The default method compares the
 		state to self.goal or checks for state in self.goal if it is a
 		list, as specified in the constructor. Override this method if
 		checking against a single self.goal is not enough."""
-		#if self.goal:
-			#return True
-		pass
+		if self.goal:
+			return True
 
 	def path_cost(self, c, state1, action, state2):
 		"""Return the cost of a solution path that arrives at state2 from
@@ -224,8 +235,8 @@ class same_game(Problem):
 		is such that the path doesn't matter, this function will only look at
 		state2.  If the path does matter, it will consider c and maybe state1
 		and action. The default method costs 1 for every step in the path."""
-		#return c+1
-		pass
+		return c+1
+
 
 	def h(self, node):
 		"""Needed for informed search."""
@@ -241,7 +252,7 @@ class GoalSolvingAgentProgram(SimpleProblemSolvingAgentProgram):
 		raise NotImplementedError
 
 	def formulate_goal(self, state):
-
+		pass
 
 	def formulate_problem(self, state, goal):
 		raise NotImplementedError
