@@ -129,11 +129,6 @@ def board_remove_group(board, group):
 		# primeiro faz-se o shit_down
 		new_board = board_shift_down(new_board, l, c)
 
-		# no final o shift_left
-	l = len(board)
-	c = len(board[0])
-	new_board = board_shift_left(new_board, l-1, c-1)
-
 	return new_board
 
 
@@ -145,7 +140,7 @@ my_board = [[1, 2, 2, 3, 3], [2, 2, 2, 1, 3], [1, 2, 2, 2, 2], [1, 1, 1, 1, 1]]
 board_print(my_board)
 g1 = board_find_groups(my_board)
 g2 = [[(0, 0)], [(0, 1), (1, 1), (2, 1), (2, 2), (1, 2), (0, 2), (2, 3), (2, 4), (1, 0)], [(0, 3), (0, 4), (1, 4)],
-      [(1, 3)], [(2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4)]]
+ [(1, 3)], [(2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4)]]
 if g1 == g2:
 	print("Worked")
 else:
