@@ -207,7 +207,7 @@ class same_game(Problem):
 		'''Uma accao deve ser um grupo de pecas a remover com uma cardinalidade maior ou igual a
 		dois, na representacao definida acima.'''
 
-		all_actions = board_find_groups(state)
+		all_actions = board_find_groups(state.board)
 
 		# delete the group of pieces with only one piece
 		actions = list(filter(lambda lst: len(lst) > 1, all_actions))
@@ -218,7 +218,7 @@ class same_game(Problem):
 		"""Return the state that results from executing the given
 		action in the given state. The action must be one of
 		self.actions(state)."""
-		result = board_remove_group(state, action)
+		result = board_remove_group(state.board, action)
 		return result
 
 	def goal_test(self, state):
