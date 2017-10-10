@@ -140,7 +140,7 @@ my_board = [[1, 2, 2, 3, 3], [2, 2, 2, 1, 3], [1, 2, 2, 2, 2], [1, 1, 1, 1, 1]]
 board_print(my_board)
 g1 = board_find_groups(my_board)
 g2 = [[(0, 0)], [(0, 1), (1, 1), (2, 1), (2, 2), (1, 2), (0, 2), (2, 3), (2, 4), (1, 0)], [(0, 3), (0, 4), (1, 4)],
- [(1, 3)], [(2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4)]]
+      [(1, 3)], [(2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4)]]
 if g1 == g2:
 	print("Worked")
 else:
@@ -170,13 +170,16 @@ else:
 # TAI sg_state
 # Classe que contem configuracao de uma board
 class sg_state():
-	__slot__ = ['board']
+	# estado deve ser representado por pelo menos um slot
+	# armazenada  configuracao do tabuleiro a que o estado pertence
+	__slots__ = ['board']
 
 	def __init__(self, board):
 		self.board = board
 
 	# TODO: complete this
 
+	#A*
 	def __lt__(self, o_state):
 		pass  # TODO: compare this state with o_state
 
@@ -191,6 +194,8 @@ class same_game(Problem):
 	# Adicionei um goal state tambem
 	def __init__(self, board):
 		self.initial = board
+
+		# the goal is going to be an empty board
 		self.goal = []
 
 	def actions(self, state):
@@ -214,7 +219,7 @@ class same_game(Problem):
 		action in the given state. The action must be one of
 		self.actions(state)."""
 		result = board_remove_group(state, action)
-		return result 
+		return result
 
 	def goal_test(self, state):
 		"""Return True if the state is a goal. The default method compares the
@@ -230,8 +235,7 @@ class same_game(Problem):
 		is such that the path doesn't matter, this function will only look at
 		state2.  If the path does matter, it will consider c and maybe state1
 		and action. The default method costs 1 for every step in the path."""
-		return c+1
-
+		return c + 1
 
 	def h(self, node):
 		"""Needed for informed search."""
@@ -240,7 +244,7 @@ class same_game(Problem):
 
 # -----------------------------------------------------------------------------------
 
-class GoalSolvingAgentProgram(SimpleProblemSolvingAgentProgram):
+'''class GoalSolvingAgentProgram(SimpleProblemSolvingAgentProgram):
 	"""Abstract framework for a problem-solving agent. [Figure 3.1]"""
 
 	def update_state(self, percept):
@@ -253,5 +257,6 @@ class GoalSolvingAgentProgram(SimpleProblemSolvingAgentProgram):
 		raise NotImplementedError
 
 	def search(self, problem):
-		same_game = same_game()
-		astar_search(problem, same_game.h())
+		same_game = same_game(problem)
+		astar_search(problem, same_game.h())'''
+'''Maybe this isn't going to be needed'''
