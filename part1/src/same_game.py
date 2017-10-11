@@ -1,5 +1,16 @@
 from search import Problem, SimpleProblemSolvingAgentProgram, astar_search
 
+if __name__ == "__main__":
+	# execute only if run as a script
+	main()
+
+
+def main():
+	initial_board = eval(input())
+	problem = same_game()
+	# now what
+	pass
+
 
 # TAI color
 # sem cor = 0
@@ -132,6 +143,18 @@ def board_remove_group(board, group):
 	return new_board
 
 
+def board_tiles_number(board):
+	tiles = 0
+
+	for list in board:
+		for tile in list:
+
+			if tile != 0:
+				tiles += 1
+
+	return tiles
+
+
 # ---------------------------------------------------------------------------
 # XXX: Testing grounds for Boards
 #################################
@@ -179,7 +202,7 @@ class sg_state():
 
 	# TODO: complete this
 
-	#A*
+	# A*
 	def __lt__(self, o_state):
 		pass  # TODO: compare this state with o_state
 
@@ -239,7 +262,11 @@ class same_game(Problem):
 
 	def h(self, node):
 		"""Needed for informed search."""
-		pass
+		# Number of misplaced tiles maybe
+		# Number of alone pieces
+		# Number of groups
+		misplaced_tiles = board_tiles_number(node.state.board)
+		return misplaced_tiles
 
 
 # -----------------------------------------------------------------------------------
