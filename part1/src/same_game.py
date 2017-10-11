@@ -1,16 +1,17 @@
 from search import Problem, SimpleProblemSolvingAgentProgram, astar_search
 
+#Main---------------------------------------------------------------------
+
+def main():
+	initial_board = eval(input())
+	problem = same_game(initial_board) #maybe
+	# now what
+
 if __name__ == "__main__":
 	# execute only if run as a script
 	main()
 
-
-def main():
-	initial_board = eval(input())
-	problem = same_game()
-	# now what
-	pass
-
+#-------------------------------------------------------------------------
 
 # TAI color
 # sem cor = 0
