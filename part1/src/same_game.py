@@ -1,17 +1,25 @@
-from search import Problem, SimpleProblemSolvingAgentProgram, astar_search
+from search import *
 
-#Main---------------------------------------------------------------------
+
+# Main---------------------------------------------------------------------
 
 def main():
 	initial_board = eval(input())
-	problem = same_game(initial_board) #maybe
-	# now what
+
+	if is_board(initial_board):
+
+		game = same_game(initial_board)  # maybe
+
+
+# de seguida chamamos uma procura e vemos os resultados
+
 
 if __name__ == "__main__":
 	# execute only if run as a script
 	main()
 
-#-------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------
 
 # TAI color
 # sem cor = 0
@@ -147,13 +155,22 @@ def board_remove_group(board, group):
 def board_tiles_number(board):
 	tiles = 0
 
-	for list in board:
-		for tile in list:
+	for lst in board:
+		for tile in lst:
 
 			if tile != 0:
 				tiles += 1
 
 	return tiles
+
+
+def is_board(board):
+
+	if isinstance(board, list):
+		for lst in board:
+			for tup in lst:
+				if not isinstance(tup, tuple):
+					raise ValueError("Board error!")
 
 
 # ---------------------------------------------------------------------------
@@ -165,6 +182,7 @@ board_print(my_board)
 g1 = board_find_groups(my_board)
 g2 = [[(0, 0)], [(0, 1), (1, 1), (2, 1), (2, 2), (1, 2), (0, 2), (2, 3), (2, 4), (1, 0)], [(0, 3), (0, 4), (1, 4)],
       [(1, 3)], [(2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4)]]
+
 if g1 == g2:
 	print("Worked")
 else:
@@ -189,7 +207,7 @@ else:
 	board_print(result)
 
 
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
 
 # TAI sg_state
 # Classe que contem configuracao de uma board
@@ -205,8 +223,9 @@ class sg_state():
 
 	# A*
 	def __lt__(self, o_state):
-		pass  # TODO: compare this state with o_state
+		pass  # TODO
 
+#---------------------------------------------------------------------------------------
 
 # TAI same_game
 # Herda da class Problem do ficheiro search.py
@@ -215,7 +234,7 @@ class same_game(Problem):
 	A solution cannot have pieces left on the board."""
 
 	# Recebe o estado inicial = board e o problem recebia um goal state tambem
-	# Adicionei um goal state tambem
+	# Adicionei um goal state
 	def __init__(self, board):
 		self.initial = board
 
@@ -269,22 +288,4 @@ class same_game(Problem):
 		misplaced_tiles = board_tiles_number(node.state.board)
 		return misplaced_tiles
 
-
-# -----------------------------------------------------------------------------------
-
-'''class GoalSolvingAgentProgram(SimpleProblemSolvingAgentProgram):
-	"""Abstract framework for a problem-solving agent. [Figure 3.1]"""
-
-	def update_state(self, percept):
-		raise NotImplementedError
-
-	def formulate_goal(self, state):
-		pass
-
-	def formulate_problem(self, state, goal):
-		raise NotImplementedError
-
-	def search(self, problem):
-		same_game = same_game(problem)
-		astar_search(problem, same_game.h())'''
-'''Maybe this isn't going to be needed'''
+		# ----------------------------------------------------------------------------------
