@@ -164,13 +164,13 @@ def board_tiles_number(board):
 	return tiles
 
 
-def is_board(board):
+def board_lin(board):
+	return len(board)
 
-	if isinstance(board, list):
-		for lst in board:
-			for tup in lst:
-				if not isinstance(tup, tuple):
-					raise ValueError("Board error!")
+
+def board_col(board):
+	return len(board[0])
+
 
 
 # ---------------------------------------------------------------------------
@@ -238,8 +238,8 @@ class same_game(Problem):
 	def __init__(self, board):
 		self.initial = board
 
-		# the goal is going to be an empty board
-		self.goal = []
+		# the goal is going to be a board full of zeros....
+		self.goal = [[0] * board_lin(board) for i in range(board_col(board))]
 
 	def actions(self, state):
 		"""Return the actions that can be executed in the given
@@ -264,13 +264,17 @@ class same_game(Problem):
 		result = board_remove_group(state.board, action)
 		return result
 
+
 	def goal_test(self, state):
 		"""Return True if the state is a goal. The default method compares the
 		state to self.goal or checks for state in self.goal if it is a
 		list, as specified in the constructor. Override this method if
 		checking against a single self.goal is not enough."""
-		if self.goal:
-			return True
+
+		last_line = state.board[-1]
+
+		return last_line[0] == 0
+
 
 	def path_cost(self, c, state1, action, state2):
 		"""Return the cost of a solution path that arrives at state2 from
