@@ -1,5 +1,8 @@
 # Project-scoped
-*.outhyp
+*outhyp
+*.diff
+
+# PyCharm work files
 .idea
 
 # Byte-compiled / optimized / DLL files

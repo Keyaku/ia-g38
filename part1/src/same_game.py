@@ -274,11 +274,8 @@ class same_game(Problem):
 # Main---------------------------------------------------------------------
 
 def main():
-	initial_board = []
-	game = same_game(initial_board)  # maybe
-
-
-# de seguida chamamos uma procura e vemos os resultados
+	pass
+	#eval(sys.argv[1])
 
 
 if __name__ == "__main__":

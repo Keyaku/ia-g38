@@ -36,6 +36,7 @@ readonly usage_content=( "Usage: $(basename $ScriptName)"
 "DIRECTORIES:
 	-t : Set tests directory"
 "OPTIONS:
+	-r : If -t was set, then -r sets recursivity of the given directory
 	--show-all : Prints successes as well"
 )
 
@@ -71,11 +72,13 @@ function parse_args {
 			-t )
 				shift
 				DIR_tests="$(get_absolute_dir "$1")"
-				BOOL_recursive=false
 				;;
 			# OPTIONS
 			--show-all )
 				BOOL_showAll=true
+				;;
+			-r )
+				BOOL_recursive=true
 				;;
 			# HELP
 			-h|--help )
@@ -129,7 +132,10 @@ function set_env {
 	fi
 	cd "$DIR_exec"
 
-	DIR_tests="$DIR_script/tests"
+	if [ ! -d "$DIR_tests" ]; then
+		DIR_tests="$DIR_script/tests_mooshak"
+		BOOL_recursive=true
+	fi
 }
 
 # Target functionality
@@ -141,37 +147,30 @@ function test_dir {
 	elif [ ! -d "$1" ]; then
 		print_error "Given argument is not a directory."
 		return $RET_error
-	elif [ -z "$(ls $1/*.in 2> /dev/null)" -o -z "$(ls $1/*.out 2> /dev/null)" ]; then
+	elif [ -z "$(ls $1/input 2> /dev/null)" -o -z "$(ls $1/output 2> /dev/null)" ]; then
 		print_error "Given directory does not contain any test files."
 		return $RET_error
 	fi
 
 	# Run tests
-	local import_flag=""
 	local fail_count=0
-	local total_count=0
-	for x in $1/*.in; do
-		total_count=$(($total_count + 1))
-		local test_name="$(basename $1)/$(basename $x)"
+	local test_name="$1/input"
+	local output="$1/output"
+	local outhyp="$1/outhyp"
 
-		python3 same_game.py < $x > ${x%.in}.outhyp
-		if [ $? -ne 0 ]; then return $RET_error; fi
+	python3 same_game.py $test_name > $outhyp
+	if [ $? -ne 0 ]; then return $RET_error; fi
 
-	    # TODO: diff ${x%.in}.out ${x%.in}.outhyp > ${x%.in}.diff
-		if [ -s ${x%.in}.diff ]; then
-	        print_failure "$test_name. See file ${test_name%.in}.diff"
-			fail_count=$(($fail_count + 1))
-	    else
-			if [ $BOOL_showAll == true ]; then
-				print_success "$test_name"
-			fi
-	        rm -f ${x%.in}.diff ${x%.in}.outhyp
-	    fi
-	done
-
-	if [ $fail_count -gt 0 ]; then
-		print_failure "Failed $fail_count / $total_count tests."
-	fi
+    diff $output $outhyp > result.diff
+	if [ -s result.diff ]; then
+        print_failure "Failed this test. Check result.diff"
+		fail_count=$(($fail_count + 1))
+    else
+		if [ $BOOL_showAll == true ]; then
+			print_success "$test_name"
+		fi
+        rm -f *.diff $outhyp
+    fi
 
 	return $fail_count
 }
