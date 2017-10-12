@@ -1,5 +1,5 @@
 
-O que È que cada teste foca:
+No que √© que cada teste foca:
 
 # Test 01 a 04 - board_find_groups
 
@@ -26,20 +26,20 @@ O que È que cada teste foca:
 
 # Test 27 - search result is an empty board
 # Test 28 - Depth First Search 10x4 com 3 cores
-# Test 29 - Depth First Search 4x5 com 2 cores sem soluÁ„o
+# Test 29 - Depth First Search 4x5 com 2 cores sem solu√ß√£o
 # Test 30 - Greedy search 10x4 com 3 cores
 # Test 31 - A* 10x4 com 5 cores
 # Test 32 - A* 10x15 com 3 cores
 
 
-S„o usadas as seguintes funÁıes cujo cÛdigo n„o foi publicado:
+S√£o usadas as seguintes fun√ß√µes cujo c√≥digo n√£o foi publicado:
 
 1) xx_recursive_sort(<list of groups>)
-   A funÁ„o devolve uma lista de grupos equivalente mas com uma ordenaÁ„o especÌfica.
+   A fun√ß√£o devolve uma lista de grupos equivalente mas com uma ordena√ß√£o espec√≠fica.
 
 2) xx_invalid_solution(<board>, <result of search>)
-   A funÁ„o devolve False se o resultado da procura estiver correcto.
-   Sen„o a funÁ„o devolve uma mensagem de erro que tenta mostrar o que falhou.
+   A fun√ß√£o devolve False se o resultado da procura estiver correcto.
+   Sen√£o a fun√ß√£o devolve uma mensagem de erro que tenta mostrar o que falhou.
    Por exemplo:
     - "A procura devia retornar um objecto do tipo Node e nao um do tipo <class 'int'> com valor 5"
     - "A accao 8 nao e valida <accao> A sequencia de accoes e: <seq de accoes>"

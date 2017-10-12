@@ -158,7 +158,7 @@ function test_dir {
 	local output="$1/output"
 	local outhyp="$1/outhyp"
 
-	python3 same_game.py $test_name > $outhyp
+	python3 same_game.py "$(cat $test_name)" > $outhyp
 	if [ $? -ne 0 ]; then return $RET_error; fi
 
     diff $output $outhyp > result.diff
