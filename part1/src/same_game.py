@@ -1,24 +1,6 @@
 from search import *
 
 
-# Main---------------------------------------------------------------------
-
-def main():
-	return  # FIXME: remove this when all our global methods are complete
-	initial_board = eval(input())
-
-	if is_board(initial_board):
-		game = same_game(initial_board)  # maybe
-
-
-# de seguida chamamos uma procura e vemos os resultados
-
-
-if __name__ == "__main__":
-	# execute only if run as a script
-	main()
-
-
 # -------------------------------------------------------------------------
 
 # TAI color
@@ -154,7 +136,7 @@ def board_remove_group(board, group):
 
 
 def board_tile_count(board):
-	tiles = len(board) * len(board[0])
+	tiles = board_lin(board) * board_col(board)
 
 	for l in board:
 		tiles -= l.count(get_no_color())
@@ -200,6 +182,10 @@ def test_boards():
 		board_print(new_board)
 		print("!=")
 		board_print(result)
+
+	print("# ---------------------------------------------------------------------------")
+	board_print(new_board)
+	print(board_tile_count(new_board))
 
 
 # -----------------------------------------------------------------------------------------
@@ -282,3 +268,22 @@ class same_game(Problem):
 		return misplaced_tiles
 
 	# ----------------------------------------------------------------------------------
+
+
+# Main---------------------------------------------------------------------
+
+def main():
+	test_boards()
+	return  # FIXME: remove this when all our global methods are complete
+	initial_board = eval(input())
+
+	if is_board(initial_board):
+		game = same_game(initial_board)  # maybe
+
+
+# de seguida chamamos uma procura e vemos os resultados
+
+
+if __name__ == "__main__":
+	# execute only if run as a script
+	main()
