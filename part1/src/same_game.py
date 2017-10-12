@@ -80,8 +80,16 @@ def board_print(board):
 		print(line)
 
 
+def board_lin(board):
+	return len(board)
+
+
+def board_col(board):
+	return len(board[0])
+
+
 def board_is_position(board, l, c):
-	return 0 <= l < len(board) and 0 <= c < len(board[0])
+	return 0 <= l < board_lin(board) and 0 <= c < board_col(board)
 
 
 def board_find_groups(board):
@@ -143,13 +151,6 @@ def board_tile_count(board):
 
 	return tiles
 
-
-def board_lin(board):
-	return len(board)
-
-
-def board_col(board):
-	return len(board[0])
 
 #-----------------------------------------------------------------------------
 def test_boards():
