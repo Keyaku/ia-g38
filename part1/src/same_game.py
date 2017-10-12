@@ -274,7 +274,7 @@ class same_game(Problem):
 # Main---------------------------------------------------------------------
 
 def main():
-	eval(sys.argv[1])
+	exec(sys.argv[1])
 
 
 if __name__ == "__main__":

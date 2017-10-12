@@ -155,21 +155,25 @@ function test_dir {
 	# Run tests
 	local fail_count=0
 	local test_name="$1/input"
-	local output="$1/output"
-	local outhyp="$1/outhyp"
+	local test_output="$1/output"
+	local test_outhyp="$1/outhyp"
+	local test_errors="$1/errors.log"
+	local test_diff="$1/result.diff"
 
-	python3 same_game.py "$(cat $test_name)" > $outhyp
-	if [ $? -ne 0 ]; then return $RET_error; fi
-
-    diff $output $outhyp > result.diff
-	if [ -s result.diff ]; then
-        print_failure "Failed this test. Check result.diff"
+	python3 same_game.py "$(cat $test_name)" > "$test_outhyp" 2> "$test_errors"
+	local error=$?
+    diff $test_output $test_outhyp > $test_diff
+	if [ $error -ne 0 ]; then
+		print_failure "Runtime error. Check errors.log"
+		fail_count=$(($fail_count + 1))
+	elif [ -s $test_diff ]; then
+        print_failure "Wrong answer. Check result.diff"
 		fail_count=$(($fail_count + 1))
     else
 		if [ $BOOL_showAll == true ]; then
 			print_success "$test_name"
 		fi
-        rm -f *.diff $outhyp
+        rm -f *.diff $test_outhyp
     fi
 
 	return $fail_count
@@ -195,7 +199,11 @@ function main {
 			print_progress "Running through \"$x\""
 			test_dir "$x"
 			fail_count=$(($fail_count + $?))
+			total_count=$(($total_count + 1))
 		done
+		if [ $fail_count -gt 0 ]; then
+			print_failure "Failed $fail_count / $total_count tests."
+		fi
 	else
 		test_dir "$DIR_tests"
 		fail_count=$?
