@@ -4,10 +4,10 @@ from search import *
 # Main---------------------------------------------------------------------
 
 def main():
+	return # FIXME: remove this when all our global methods are complete
 	initial_board = eval(input())
 
 	if is_board(initial_board):
-
 		game = same_game(initial_board)  # maybe
 
 
@@ -146,20 +146,18 @@ def board_remove_group(board, group):
 
 		new_board[l][c] = get_no_color()
 
-		# primeiro faz-se o shit_down
+		# primeiro faz-se o shift_down
 		new_board = board_shift_down(new_board, l, c)
+	# TODO: fazer shift_left
 
 	return new_board
 
 
-def board_tiles_number(board):
-	tiles = 0
+def board_tile_count(board):
+	tiles = len(board) * len(board[0])
 
-	for lst in board:
-		for tile in lst:
-
-			if tile != 0:
-				tiles += 1
+	for l in board:
+		tiles -= l.count(get_no_color())
 
 	return tiles
 
@@ -289,7 +287,7 @@ class same_game(Problem):
 		# Number of misplaced tiles maybe
 		# Number of alone pieces
 		# Number of groups
-		misplaced_tiles = board_tiles_number(node.state.board)
+		misplaced_tiles = board_tile_count(node.state.board)
 		return misplaced_tiles
 
 		# ----------------------------------------------------------------------------------
