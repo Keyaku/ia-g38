@@ -216,11 +216,9 @@ class sg_state():
 	def __init__(self, board):
 		self.board = board
 
-	# TODO: complete this
-
 	# A*
 	def __lt__(self, o_state):
-		pass  # TODO
+		pass
 
 #---------------------------------------------------------------------------------------
 
