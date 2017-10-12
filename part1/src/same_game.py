@@ -160,6 +160,8 @@ class sg_state():
 	# estado deve ser representado por pelo menos um slot
 	# armazenada configuracao do tabuleiro a que o estado pertence
 
+	__slots__ = ['board']
+
 	def __init__(self, board):
 		self.board = board
 
@@ -175,6 +177,8 @@ class sg_state():
 class same_game(Problem):
 	"""Models a Same Game problem as a satisfaction problem.
 	A solution cannot have pieces left on the board."""
+
+	__slots__ = ['initial', 'goal']
 
 	def __init__(self, board):
 		self.initial = board
@@ -210,10 +214,7 @@ class same_game(Problem):
 		state to self.goal or checks for state in self.goal if it is a
 		list, as specified in the constructor. Override this method if
 		checking against a single self.goal is not enough."""
-
-		last_line = state.board[-1]
-
-		return last_line[0] == 0
+		return no_color(state.board[-1][0])
 
 	def path_cost(self, c, state1, action, state2):
 		"""Return the cost of a solution path that arrives at state2 from
