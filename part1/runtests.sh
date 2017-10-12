@@ -153,7 +153,6 @@ function test_dir {
 	fi
 
 	# Run tests
-	local fail_count=0
 	local test_name="$1/input"
 	local test_output="$1/output"
 	local test_outhyp="$1/outhyp"
@@ -165,10 +164,10 @@ function test_dir {
     diff $test_output $test_outhyp > $test_diff
 	if [ $error -ne 0 ]; then
 		print_failure "Runtime error. Check errors.log"
-		fail_count=$(($fail_count + 1))
+		return 1
 	elif [ -s $test_diff ]; then
         print_failure "Wrong answer. Check result.diff"
-		fail_count=$(($fail_count + 1))
+		return 2
     else
 		if [ $BOOL_showAll == true ]; then
 			print_success "$test_name"
@@ -176,7 +175,7 @@ function test_dir {
         rm -f *.diff $test_outhyp
     fi
 
-	return $fail_count
+	return 0
 }
 
 function cleanup {
@@ -194,15 +193,29 @@ function main {
 
 	local retval=$RET_success
 	local fail_count=0
+
 	if [ $BOOL_recursive == true ]; then
+		local error=0
+		local runtime_error=0
+		local wrong_answer=0
+
 		for x in $DIR_tests/*/; do
 			print_progress "Running through \"$x\""
 			test_dir "$x"
-			fail_count=$(($fail_count + $?))
+			error=$?
+			if [ $error -eq 1 ]; then
+				runtime_error=$(($runtime_error + 1))
+			elif [ $error -eq 2 ]; then
+				wrong_answer=$(($wrong_answer + 1))
+			fi
 			total_count=$(($total_count + 1))
 		done
+
+		fail_count=$(($runtime_error + $wrong_answer))
+
 		if [ $fail_count -gt 0 ]; then
-			print_failure "Failed $fail_count / $total_count tests."
+			print_failure "\n$runtime_error Runtime Errors\n$wrong_answer Wrong Answers"
+			printf "Total: $fail_count / $total_count tests.\n"
 		fi
 	else
 		test_dir "$DIR_tests"
