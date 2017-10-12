@@ -195,14 +195,14 @@ def test_boards():
 # Classe que contem configuracao de uma board
 class sg_state():
 	# estado deve ser representado por pelo menos um slot
-	# armazenada  configuracao do tabuleiro a que o estado pertence
+	# armazenada configuracao do tabuleiro a que o estado pertence
 
 	def __init__(self, board):
 		self.board = board
 
 	# A*
 	def __lt__(self, o_state):
-		pass
+		return board_tile_count(self.board) < board_tile_count(o_state.board)
 
 
 # ---------------------------------------------------------------------------------------
@@ -274,12 +274,8 @@ class same_game(Problem):
 # Main---------------------------------------------------------------------
 
 def main():
-	test_boards()
-	return  # FIXME: remove this when all our global methods are complete
-	initial_board = eval(input())
-
-	if is_board(initial_board):
-		game = same_game(initial_board)  # maybe
+	initial_board = []
+	game = same_game(initial_board)  # maybe
 
 
 # de seguida chamamos uma procura e vemos os resultados
