@@ -4,7 +4,7 @@ from search import *
 # Main---------------------------------------------------------------------
 
 def main():
-	return # FIXME: remove this when all our global methods are complete
+	return  # FIXME: remove this when all our global methods are complete
 	initial_board = eval(input())
 
 	if is_board(initial_board):
@@ -169,7 +169,7 @@ def board_lin(board):
 def board_col(board):
 	return len(board[0])
 
-
+#-----------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 # XXX: Testing grounds for Boards
@@ -220,7 +220,8 @@ class sg_state():
 	def __lt__(self, o_state):
 		pass
 
-#---------------------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------------------
 
 # TAI same_game
 # Herda da class Problem do ficheiro search.py
@@ -228,8 +229,6 @@ class same_game(Problem):
 	"""Models a Same Game problem as a satisfaction problem.
 	A solution cannot have pieces left on the board."""
 
-	# Recebe o estado inicial = board e o problem recebia um goal state tambem
-	# Adicionei um goal state
 	def __init__(self, board):
 		self.initial = board
 
@@ -259,7 +258,6 @@ class same_game(Problem):
 		result = board_remove_group(state.board, action)
 		return result
 
-
 	def goal_test(self, state):
 		"""Return True if the state is a goal. The default method compares the
 		state to self.goal or checks for state in self.goal if it is a
@@ -269,7 +267,6 @@ class same_game(Problem):
 		last_line = state.board[-1]
 
 		return last_line[0] == 0
-
 
 	def path_cost(self, c, state1, action, state2):
 		"""Return the cost of a solution path that arrives at state2 from
@@ -287,4 +284,4 @@ class same_game(Problem):
 		misplaced_tiles = board_tile_count(node.state.board)
 		return misplaced_tiles
 
-		# ----------------------------------------------------------------------------------
+	# ----------------------------------------------------------------------------------
