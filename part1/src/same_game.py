@@ -170,39 +170,36 @@ def board_col(board):
 	return len(board[0])
 
 #-----------------------------------------------------------------------------
+def test_boards():
+	# Testing board_find_groups()
+	my_board = [[1, 2, 2, 3, 3], [2, 2, 2, 1, 3], [1, 2, 2, 2, 2], [1, 1, 1, 1, 1]]
+	board_print(my_board)
+	g1 = board_find_groups(my_board)
+	g2 = [[(0, 0)], [(0, 1), (1, 1), (2, 1), (2, 2), (1, 2), (0, 2), (2, 3), (2, 4), (1, 0)], [(0, 3), (0, 4), (1, 4)],
+	      [(1, 3)], [(2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4)]]
 
-# ---------------------------------------------------------------------------
-# XXX: Testing grounds for Boards
-#################################
-# Testing board_find_groups()
-my_board = [[1, 2, 2, 3, 3], [2, 2, 2, 1, 3], [1, 2, 2, 2, 2], [1, 1, 1, 1, 1]]
-board_print(my_board)
-g1 = board_find_groups(my_board)
-g2 = [[(0, 0)], [(0, 1), (1, 1), (2, 1), (2, 2), (1, 2), (0, 2), (2, 3), (2, 4), (1, 0)], [(0, 3), (0, 4), (1, 4)],
-      [(1, 3)], [(2, 0), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4)]]
+	if g1 == g2:
+		print("Worked")
+	else:
+		print(g1)
+		print("!=")
+		print(g2)
 
-if g1 == g2:
-	print("Worked")
-else:
-	print(g1)
-	print("!=")
-	print(g2)
+	print("# ---------------------------------------------------------------------------")
+	# Testing board_remove_group()
 
-print("# ---------------------------------------------------------------------------")
-# Testing board_remove_group()
-
-new_board = [[0, 0, 0, 0, 0], [0, 2, 3, 3, 0], [1, 2, 1, 3, 0], [2, 2, 2, 2, 0]]
-g3 = [(1, 1), (2, 1), (3, 1), (3, 2), (3, 3), (3, 0)]
-board_print(new_board)
-new_board = board_remove_group(new_board, g3)
-result = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 3, 3, 0, 0], [1, 1, 3, 0, 0]]
-print("\nRemoved group:", g3)
-if new_board == result:
-	print("Worked")
-else:
+	new_board = [[0, 0, 0, 0, 0], [0, 2, 3, 3, 0], [1, 2, 1, 3, 0], [2, 2, 2, 2, 0]]
+	g3 = [(1, 1), (2, 1), (3, 1), (3, 2), (3, 3), (3, 0)]
 	board_print(new_board)
-	print("!=")
-	board_print(result)
+	new_board = board_remove_group(new_board, g3)
+	result = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 3, 3, 0, 0], [1, 1, 3, 0, 0]]
+	print("\nRemoved group:", g3)
+	if new_board == result:
+		print("Worked")
+	else:
+		board_print(new_board)
+		print("!=")
+		board_print(result)
 
 
 # -----------------------------------------------------------------------------------------
