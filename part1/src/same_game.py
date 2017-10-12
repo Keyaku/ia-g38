@@ -212,7 +212,6 @@ else:
 class sg_state():
 	# estado deve ser representado por pelo menos um slot
 	# armazenada  configuracao do tabuleiro a que o estado pertence
-	__slots__ = ['board']
 
 	def __init__(self, board):
 		self.board = board
