@@ -69,7 +69,7 @@ def group_find_adj(board, cor, l, c, adj):
 # TAI board
 # Lista de listas de color
 def board_clone(board):
-	return [line for line in board]
+	return [list(line) for line in board]
 
 
 def board_lin(board):
