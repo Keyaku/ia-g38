@@ -183,13 +183,10 @@ class same_game(Problem):
 	"""Models a Same Game problem as a satisfaction problem.
 	A solution cannot have pieces left on the board."""
 
-	__slots__ = ['initial', 'goal']
+	__slots__ = ['initial']
 
 	def __init__(self, board):
 		self.initial = sg_state(board)
-
-		# the goal is going to be a board full of zeros....
-		self.goal = [[0] * board_lin(board) for i in range(board_col(board))]
 
 	def actions(self, state):
 		"""Return the actions that can be executed in the given
