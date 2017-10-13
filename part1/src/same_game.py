@@ -231,7 +231,8 @@ class same_game(Problem):
 		# Number of misplaced tiles maybe
 		# Number of alone pieces
 		# Number of groups
-		return board_tile_count(node.state.board)
+		groups = board_find_groups(node.state.board)
+		return len(groups)
 
 	# ----------------------------------------------------------------------------------
 
