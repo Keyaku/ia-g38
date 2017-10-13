@@ -187,7 +187,7 @@ class same_game(Problem):
 	__slots__ = ['initial', 'goal']
 
 	def __init__(self, board):
-		self.initial = board
+		self.initial = sg_state(board)
 
 		# the goal is going to be a board full of zeros....
 		self.goal = [[0] * board_lin(board) for i in range(board_col(board))]
@@ -213,7 +213,7 @@ class same_game(Problem):
 		action in the given state. The action must be one of
 		self.actions(state)."""
 		result = board_remove_group(state.board, action)
-		return result
+		return sg_state(result)
 
 	def goal_test(self, state):
 		"""Return True if the state is a goal. The default method compares the
