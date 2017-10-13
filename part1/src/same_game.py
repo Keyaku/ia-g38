@@ -114,16 +114,16 @@ def board_find_groups(board):
 
 
 def board_shift_down(board, l, c):
-	for i in range(l, -1, -1):
-		if board_is_position(board, i - 1, c) and no_color(board[i][c]):
-			board[i][c] = board[i - 1][c]
-			board[i - 1][c] = get_no_color()
+	if board_is_position(board, l - 1, c) and no_color(board[l][c]):
+		board[l][c] = board[l - 1][c]
+		board[l - 1][c] = get_no_color()
+		board_shift_down(board, l - 1, c)
 
 
 def board_shift_left(board, l, c):
-	for i in range(l, -1, -1):
-		if board_is_position(board, i, c):
-			board[i].append(board[i].pop(c))
+	if board_is_position(board, l, c):
+		board[l].append(board[l].pop(c))
+		board_shift_left(board, l - 1, c)
 
 
 def board_remove_group(board, group):
@@ -244,6 +244,7 @@ class same_game(Problem):
 		return board_tile_count(node.state.board)
 
 	# ----------------------------------------------------------------------------------
+
 
 # Main---------------------------------------------------------------------
 
