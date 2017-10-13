@@ -51,7 +51,8 @@ def group_find_adj(board, cor, l, c, adj):
 		if pos not in adj:
 			adj += [pos]
 
-			cor = board[l][c] # deCORando a COR. Get it?
+			# deCORando a COR. Get it?
+			cor = board[l][c]
 			board[l][c] = get_no_color()  # marcamos como visitado
 
 			# Verificando pela ordem: sup, inf, esq, dir
@@ -59,8 +60,6 @@ def group_find_adj(board, cor, l, c, adj):
 			adj = group_find_adj(board, cor, l - 1, c, adj)
 			adj = group_find_adj(board, cor, l, c + 1, adj)
 			adj = group_find_adj(board, cor, l, c - 1, adj)
-
-		board[l][c] = cor # Repomos a nossa cor
 
 	return adj
 
@@ -93,14 +92,15 @@ def board_is_position(board, l, c):
 	return 0 <= l < board_lin(board) and 0 <= c < board_col(board)
 
 
-def group_has_position(groups, pos):
-	for group in groups:
-		if pos in group:
-			return True
-	return False
+def board_reset_color(board, group, cor):
+	for pos in group:
+		l = pos_l(pos)
+		c = pos_c(pos)
+		board[l][c] = cor
 
 
 def board_find_groups(board):
+	lista_de_cores = []
 	lista_de_grupos = []
 
 	l_range = range(board_lin(board))
@@ -108,10 +108,16 @@ def board_find_groups(board):
 
 	for l in l_range:
 		for c in c_range:
-			pos = make_pos(l, c)
 
-			if color(board[l][c]) and not group_has_position(lista_de_grupos, pos):
+			if color(board[l][c]):
+				lista_de_cores += [board[l][c]]
 				lista_de_grupos += [make_group(board, l, c)]
+
+	# Resetting colors
+	for i in range(len(lista_de_grupos)):
+		group = lista_de_grupos[i]
+		cor = lista_de_cores[i]
+		board_reset_color(board, group, cor)
 
 	return lista_de_grupos
 
