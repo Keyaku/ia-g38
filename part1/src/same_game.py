@@ -92,8 +92,16 @@ def board_is_position(board, l, c):
 	return 0 <= l < board_lin(board) and 0 <= c < board_col(board)
 
 
+def board_reset_color(board, group, cor):
+	for pos in group:
+		l = pos_l(pos)
+		c = pos_c(pos)
+		board[l][c] = cor
+
+
 def board_find_groups(board):
-	lista_de_grupos = []  # tem que ter tamanho de numero de cores
+	lista_de_cores = []
+	lista_de_grupos = []
 
 	l_range = range(board_lin(board))
 	c_range = range(board_col(board))
@@ -102,7 +110,14 @@ def board_find_groups(board):
 		for c in c_range:
 
 			if color(board[l][c]):
+				lista_de_cores += [board[l][c]]
 				lista_de_grupos += [make_group(board, l, c)]
+
+	# Resetting colors
+	for i in range(len(lista_de_grupos)):
+		group = lista_de_grupos[i]
+		cor = lista_de_cores[i]
+		board_reset_color(board, group, cor)
 
 	return lista_de_grupos
 
