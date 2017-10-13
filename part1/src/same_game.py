@@ -1,6 +1,5 @@
 from search import *
 
-import resource
 
 # -------------------------------------------------------------------------
 
@@ -261,11 +260,6 @@ class same_game(Problem):
 
 def main():
 	exec(sys.argv[1])
-
-	# Getting amount of memory used
-	rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss # RSS value
-	memory = '{:,}'.format(rss).replace(',', ' ') # formatted value
-	print(memory, "bytes")
 
 
 if __name__ == "__main__":
