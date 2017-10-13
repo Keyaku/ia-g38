@@ -125,6 +125,9 @@ def board_shift_left(board, l, c):
 def board_remove_group(board, group):
 	new_board = board_clone(board)
 
+	# Sorting our group so we can accurately shift down while we remove each piece
+	group.sort()
+
 	# Clearing blanks
 	for pos in group:
 		l = pos_l(pos)
