@@ -93,17 +93,16 @@ def board_is_position(board, l, c):
 
 
 def board_find_groups(board):
-	new_board = board_clone(board)
 	lista_de_grupos = []  # tem que ter tamanho de numero de cores
 
-	l_range = range(len(new_board))
-	c_range = range(len(new_board[0]))
+	l_range = range(board_lin(board))
+	c_range = range(board_col(board))
 
 	for l in l_range:
 		for c in c_range:
 
-			if color(new_board[l][c]):
-				lista_de_grupos += [make_group(new_board, l, c)]
+			if color(board[l][c]):
+				lista_de_grupos += [make_group(board, l, c)]
 
 	return lista_de_grupos
 
