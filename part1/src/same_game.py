@@ -116,11 +116,9 @@ def board_shift_down(board, l, c):
 
 
 def board_shift_left(board, l, c):
-	if board_is_position(board, l, c + 1) and no_color(board[l][c]):
-		board[l][c] = board[l][c + 1]
-		board[l][c + 1] = get_no_color()
+	if board_is_position(board, l, c):
+		board[l].append(board[l].pop(c))
 		board_shift_left(board, l - 1, c)
-
 
 def board_remove_group(board, group):
 	new_board = board_clone(board)
@@ -138,10 +136,15 @@ def board_remove_group(board, group):
 		# Immediately shifting down
 		board_shift_down(new_board, l, c)
 
-	# Shifting left
+	# Shifting left (FIXME: highly inefficient)
 	l = board_lin(new_board)-1
+	count = 0
 	for c in range(board_col(new_board)):
-		board_shift_left(new_board, l, c)
+		if no_color(new_board[l][c]):
+			count += 1
+		elif color(new_board[l][c]):
+			for i in range(count):
+				board_shift_left(new_board, l, c-count)
 
 	return new_board
 
