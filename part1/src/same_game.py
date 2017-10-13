@@ -135,6 +135,7 @@ def board_shift_left(board, l, c):
 		board[l].append(board[l].pop(c))
 		board_shift_left(board, l - 1, c)
 
+
 def board_remove_group(board, group):
 	new_board = board_clone(board)
 
@@ -218,8 +219,8 @@ class same_game(Problem):
 
 		all_actions = board_find_groups(state.board)
 
-		# delete the group of pieces with only one piece
-		actions = list(filter(lambda lst: len(lst) > 1, all_actions))
+		# filter the groups of pieces with more than one piece
+		actions = [lst for lst in all_actions if len(lst) > 1]
 
 		return actions
 
