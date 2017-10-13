@@ -69,15 +69,7 @@ def group_find_adj(board, cor, l, c, adj):
 # TAI board
 # Lista de listas de color
 def board_clone(board):
-	new_board = []
-	for line in board:
-		new_board += [list(line)]
-	return new_board
-
-
-def board_print(board):
-	for line in board:
-		print(line)
+	return [line for line in board]
 
 
 def board_lin(board):
@@ -108,7 +100,6 @@ def board_find_groups(board):
 
 	for l in l_range:
 		for c in c_range:
-
 			if color(board[l][c]):
 				lista_de_cores += [board[l][c]]
 				lista_de_grupos += [make_group(board, l, c)]
