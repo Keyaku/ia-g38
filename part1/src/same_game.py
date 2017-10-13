@@ -1,4 +1,5 @@
 from search import *
+import copy
 
 
 # -------------------------------------------------------------------------
@@ -49,7 +50,7 @@ def group_find_adj(board, cor, l, c, adj):
 		pos = make_pos(l, c)
 
 		if pos not in adj:
-			adj += [pos]
+			adj.append(pos)
 
 			# deCORando a COR. Get it?
 			cor = board[l][c]
@@ -69,7 +70,7 @@ def group_find_adj(board, cor, l, c, adj):
 # TAI board
 # Lista de listas de color
 def board_clone(board):
-	return [list(line) for line in board]
+	return copy.deepcopy(board)
 
 
 def board_lin(board):
@@ -92,23 +93,16 @@ def board_reset_color(board, group, cor):
 
 
 def board_find_groups(board):
-	lista_de_cores = []
 	lista_de_grupos = []
+	new_board = board_clone(board)
 
 	l_range = range(board_lin(board))
 	c_range = range(board_col(board))
 
 	for l in l_range:
 		for c in c_range:
-			if color(board[l][c]):
-				lista_de_cores += [board[l][c]]
-				lista_de_grupos += [make_group(board, l, c)]
-
-	# Resetting colors (FIXME: find a way to remove this)
-	for i in range(len(lista_de_grupos)):
-		group = lista_de_grupos[i]
-		cor = lista_de_cores[i]
-		board_reset_color(board, group, cor)
+			if color(new_board[l][c]):
+				lista_de_grupos += [make_group(new_board, l, c)]
 
 	return lista_de_grupos
 
