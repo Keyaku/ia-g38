@@ -115,7 +115,7 @@ def board_shift_down(board, l, c):
 
 def board_shift_left(board, l, c):
 	if board_is_position(board, l, c):
-		board[l].append(board[l].pop(c))
+		board[l] = board[l][:c-1] + board[l][c:] + [get_no_color()]
 		board_shift_left(board, l - 1, c)
 
 
@@ -143,7 +143,8 @@ def board_remove_group(board, group):
 			count += 1
 		elif color(new_board[l][c]):
 			for i in range(count):
-				board_shift_left(new_board, l, c-count)
+				board_shift_left(new_board, l, c-i)
+			count = 0
 
 	return new_board
 
