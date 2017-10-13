@@ -56,10 +56,10 @@ def group_find_adj(board, cor, l, c, adj):
 			board[l][c] = get_no_color()  # marcamos como visitado
 
 			# Verificando pela ordem: sup, inf, esq, dir
-			adj = group_find_adj(board, cor, l + 1, c, adj)
-			adj = group_find_adj(board, cor, l - 1, c, adj)
-			adj = group_find_adj(board, cor, l, c + 1, adj)
-			adj = group_find_adj(board, cor, l, c - 1, adj)
+			group_find_adj(board, cor, l + 1, c, adj)
+			group_find_adj(board, cor, l - 1, c, adj)
+			group_find_adj(board, cor, l, c + 1, adj)
+			group_find_adj(board, cor, l, c - 1, adj)
 
 	return adj
 
@@ -104,7 +104,7 @@ def board_find_groups(board):
 				lista_de_cores += [board[l][c]]
 				lista_de_grupos += [make_group(board, l, c)]
 
-	# Resetting colors
+	# Resetting colors (FIXME: find a way to remove this)
 	for i in range(len(lista_de_grupos)):
 		group = lista_de_grupos[i]
 		cor = lista_de_cores[i]
@@ -114,16 +114,16 @@ def board_find_groups(board):
 
 
 def board_shift_down(board, l, c):
-	if board_is_position(board, l - 1, c) and no_color(board[l][c]):
-		board[l][c] = board[l - 1][c]
-		board[l - 1][c] = get_no_color()
-		board_shift_down(board, l - 1, c)
+	for i in range(l, -1, -1):
+		if board_is_position(board, i - 1, c) and no_color(board[i][c]):
+			board[i][c] = board[i - 1][c]
+			board[i - 1][c] = get_no_color()
 
 
 def board_shift_left(board, l, c):
-	if board_is_position(board, l, c):
-		board[l].append(board[l].pop(c))
-		board_shift_left(board, l - 1, c)
+	for i in range(l, -1, -1):
+		if board_is_position(board, i, c):
+			board[i].append(board[i].pop(c))
 
 
 def board_remove_group(board, group):
@@ -241,11 +241,9 @@ class same_game(Problem):
 		# Number of misplaced tiles maybe
 		# Number of alone pieces
 		# Number of groups
-		misplaced_tiles = board_tile_count(node.state.board)
-		return misplaced_tiles
+		return board_tile_count(node.state.board)
 
 	# ----------------------------------------------------------------------------------
-
 
 # Main---------------------------------------------------------------------
 
