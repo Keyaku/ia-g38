@@ -159,7 +159,7 @@ function test_dir {
 	local test_errors="$1/errors.log"
 	local test_diff="$1/result.diff"
 
-	python3 same_game.py "$(cat $test_name)" > "$test_outhyp" 2> "$test_errors"
+	python3 -c "from same_game import *; $(cat $test_name)" > "$test_outhyp" 2> "$test_errors"
 	local error=$?
     diff $test_output $test_outhyp > $test_diff
 	if [ $error -ne 0 ]; then
