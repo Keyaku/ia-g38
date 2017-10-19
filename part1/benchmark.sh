@@ -158,12 +158,14 @@ function test_dir {
 		local test_errors="${test_input%.in}.log"
 		local error=0
 
+		local print_msg="print(\"n actions: \" + str(problem.succs) + \"  n result: \" + str(problem.states) + \"  n goal_test: \" + str(problem.goal_tests))"
+		local board="$(cat $test_input)"
+
 		for algo in ${search_algorithms[@]}; do
 			print_progress "Running $algo over $test_input..."
 			test_output="${test_input%.in}.$algo.outhyp"
 
-			board="$(cat $test_input)"
-			cmd="problem = InstrumentedProblem(same_game($board)); $algo(problem); print(problem)"
+			local cmd="problem = InstrumentedProblem(same_game($board)); $algo(problem); $print_msg"
 			time python3 -c "from same_game import *; $cmd" > "$test_output" 2> "$test_errors"
 			error=$?
 			if [ $error -ne 0 ]; then
@@ -176,8 +178,7 @@ function test_dir {
 			print_progress "Running $algo over $test_input..."
 			test_output="${test_input%.in}.$algo.outhyp"
 
-			board="$(cat $test_input)"
-			cmd="problem = InstrumentedProblem(same_game($board)); $algo(problem, problem.h); print(problem)"
+			local cmd="problem = InstrumentedProblem(same_game($board)); $algo(problem, problem.h); $print_msg"
 			time python3 -c "from same_game import *; $cmd" > "$test_output" 2> "$test_errors"
 			error=$?
 			if [ $error -ne 0 ]; then
