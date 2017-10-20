@@ -174,7 +174,7 @@ function test_single {
 		error=$?
 		if [ $error -ne 0 ]; then
 			print_failure "Runtime error. Check $test_errors"
-			break
+			exit
 		fi
 	done
 }
