@@ -29,12 +29,16 @@ readonly Err="${BRed}Error${Red}:${RCol}"
 
 readonly ScriptName="$0"
 
+# Python printing line to use with our tests
+readonly print_msg="print(\"n actions: \" + str(problem.succs) + \"  n result: \" + str(problem.states) + \"  n goal_test: \" + str(problem.goal_tests))"
+
 # String Arrays
 readonly usage_content=( "Usage: $(basename $ScriptName)"
 "HELP:
 	-h : Shows this message"
-"DIRECTORIES:
-	-d : Set tests directory"
+"FILES & DIRECTORIES:
+	-d : Set tests directory
+	-t : Set the single test to run"
 "OPTIONS:
 	--show-all : Prints successes as well"
 )
@@ -67,10 +71,15 @@ function parse_args {
 
 	while [ $# -gt 0 ]; do
 		case $1 in
-			# DIRECTORIES
-			-t )
+			# FILES & DIRECTORIES
+			-d )
 				shift
 				DIR_tests="$(get_absolute_dir "$1")"
+				;;
+			-t )
+				shift
+				DIR_tests="$(get_absolute_dir "$(dirname $1)")"
+				FILE_testName="$DIR_tests/$(basename $1)"
 				;;
 			# OPTIONS
 			--show-all )
@@ -136,8 +145,39 @@ function set_env {
 }
 
 # Target functionality
-search_algorithms=( "depth_first_tree_search" "astar_search" )
-heuristic_algorithms=( "greedy_best_first_graph_search" )
+search_algorithms=(
+"depth_first_tree_search"
+"greedy_best_first_graph_search"
+"astar_search"
+)
+
+function test_single {
+	# $1 : test to run
+	local test_input="$1"
+	local test_errors="${test_input%.in}.log"
+	local error=0
+
+	local board="$(cat $test_input)"
+
+	for algo in ${search_algorithms[@]}; do
+		print_progress "Running $algo over $test_input..."
+		local test_output="${test_input%.in}.$algo.outhyp"
+
+		local cmd=""
+		if [ $(echo $algo | grep "greedy_best_first_graph_search") ]; then
+			cmd="problem = InstrumentedProblem(same_game($board)); $algo(problem, problem.h); $print_msg"
+		else
+			cmd="problem = InstrumentedProblem(same_game($board)); $algo(problem); $print_msg"
+		fi
+
+		time python3 -c "from same_game import *; $cmd" > "$test_output" 2> "$test_errors"
+		error=$?
+		if [ $error -ne 0 ]; then
+			print_failure "Runtime error. Check $test_errors"
+			break
+		fi
+	done
+}
 
 function test_dir {
 	# $1 : test directory
@@ -154,40 +194,8 @@ function test_dir {
 
 	# Run tests
 	for test_input in $1/*.in; do
-		local test_output=""
-		local test_errors="${test_input%.in}.log"
-		local error=0
-
-		local print_msg="print(\"n actions: \" + str(problem.succs) + \"  n result: \" + str(problem.states) + \"  n goal_test: \" + str(problem.goal_tests))"
-		local board="$(cat $test_input)"
-
-		for algo in ${search_algorithms[@]}; do
-			print_progress "Running $algo over $test_input..."
-			test_output="${test_input%.in}.$algo.outhyp"
-
-			local cmd="problem = InstrumentedProblem(same_game($board)); $algo(problem); $print_msg"
-			time python3 -c "from same_game import *; $cmd" > "$test_output" 2> "$test_errors"
-			error=$?
-			if [ $error -ne 0 ]; then
-				print_failure "Runtime error. Check $test_errors"
-				break
-			fi
-		done
-
-		for algo in ${heuristic_algorithms[@]}; do
-			print_progress "Running $algo over $test_input..."
-			test_output="${test_input%.in}.$algo.outhyp"
-
-			local cmd="problem = InstrumentedProblem(same_game($board)); $algo(problem, problem.h); $print_msg"
-			time python3 -c "from same_game import *; $cmd" > "$test_output" 2> "$test_errors"
-			error=$?
-			if [ $error -ne 0 ]; then
-				print_failure "Runtime error. Check $test_errors"
-				break
-			fi
-		done
-
-		printf "\n"
+		test_single $test_input
+		echo "__________________________________"
 	done
 
 	return 0
@@ -208,11 +216,15 @@ function main {
 
 	local retval=$RET_success
 
-	test_dir "$DIR_tests"
-	retval=$?
+	if [ -z "$FILE_testName" ]; then
+		test_dir "$DIR_tests"
+		retval=$?
+	else
+		test_single "$FILE_testName"
+		retval=$?
+	fi
 
 	cleanup
-
 	exit $retval
 }
 
