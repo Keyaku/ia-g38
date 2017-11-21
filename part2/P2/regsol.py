@@ -5,18 +5,14 @@ from sklearn.model_selection import cross_val_score
 import timeit
 
 def mytraining(X,Y):
-    
-   
-    return reg
-    
+	return reg
+
 def mytrainingaux(X,Y,par):
-    
-    reg.fit(X,Y)
-                
-    return reg
+	reg.fit(X,Y)
+
+	return reg
 
 def myprediction(X,reg):
+	Ypred = reg.predict(X)
 
-    Ypred = reg.predict(X)
-
-    return Ypred
+	return Ypred
