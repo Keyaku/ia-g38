@@ -1,3 +1,5 @@
+# 84738 Lucia Lisboa - 77906 Antonio Sarmento - 38
+
 # -*- coding: utf-8 -*-
 """
 Created on Mon Oct 16 20:31:54 2017
@@ -7,6 +9,7 @@ Created on Mon Oct 16 20:31:54 2017
 import numpy as np
 
 def Q2pol(Q, eta=5):
+	# TODO
 	return
 
 class myRL:
@@ -18,6 +21,6 @@ class myRL:
 		self.Q = np.zeros((nS,nA))
 
 	def traces2Q(self, trace):
-		# implementar esta funcao
+		# TODO: implementar esta funcao
 
 		return self.Q
