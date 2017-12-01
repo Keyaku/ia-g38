@@ -16,6 +16,7 @@ vowels = "aeiouy"
 def normalize(string):
 	return str(unicodedata.normalize('NFKD', string).encode('ascii', 'ignore'), 'utf-8')
 
+
 def remove_artifacts(string):
 	return string.strip('\n')
 
@@ -34,20 +35,18 @@ def count_vowels(word):
 
 def count_character_occurrences(word):
 	counted = []
-	nword = normalize(word)
 
-	for c in nword:
-		if c not in counted and nword.count(c) > 1:
+	for c in word:
+		if c not in counted and word.count(c) > 1:
 			counted += [c]
 
 	return len(counted)
 
 
 def sum_characters(word):
-	nword = normalize(word)
 	count = 0
 
-	for c in nword:
+	for c in word:
 		count += ord(c) - ord('a')
 
 	return count
