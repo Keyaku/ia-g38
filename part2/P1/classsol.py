@@ -8,7 +8,6 @@ import timeit
 
 from sklearn.model_selection import cross_val_score
 
-import re
 import unicodedata
 
 
@@ -30,15 +29,6 @@ def count_vowels(word):
 	return count
 
 
-def count_accent_symbols(word):
-	symbols = re.findall('[^\w]', word, re.A)
-
-	while '\n' in symbols:
-		symbols.remove('\n')
-
-	return len(symbols)
-
-
 def count_character_occurrences(word):
 	counted = []
 	nword = normalize(word)
@@ -50,23 +40,15 @@ def count_character_occurrences(word):
 	return len(counted)
 
 
-def count_alpha(word):
-	count = len(word)
-	digits = re.findall(r'\d+', word)
-	if len(digits) > 0:
-		count -= len(digits[0])
-	return count
 
 
 def features(X):
-
 	F = np.zeros((len(X),5))
+
 	for x in range(0,len(X)):
-		F[x,0] = count_characters(X[x]) # length of the word, lowers by ~0.04 in wordsclass.npy, ~0.01 in wordsclass2.npy
-		F[x,1] = count_accent_symbols(X[x]) # accented words, lowers by ~0.032
-		F[x,2] = count_vowels(X[x]) # vowels, lowers ~0.002
-		F[x,3] = count_character_occurrences(X[x]) # repeated characters, lowers by ~0.015
-		F[x,4] = count_alpha(X[x])
+		F[x,0] = count_characters(X[x]) # length of the word
+		F[x,1] = count_vowels(X[x]) # number of vowels
+		F[x,2] = count_character_occurrences(X[x]) # number of same character occurrences
 
 	return F
 
