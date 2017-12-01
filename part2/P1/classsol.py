@@ -40,6 +40,14 @@ def count_character_occurrences(word):
 	return len(counted)
 
 
+def sum_characters(word):
+	nword = normalize(word)
+	count = 0
+
+	for c in nword:
+		count += ord(c) - ord('a')
+
+	return count
 
 
 def features(X):
@@ -47,6 +55,7 @@ def features(X):
 		count_characters,
 		count_vowels,
 		count_character_occurrences,
+		sum_characters,
 	]
 
 	F = np.zeros((len(X),len(feature_array)))
