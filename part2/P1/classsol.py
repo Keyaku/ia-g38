@@ -82,6 +82,6 @@ def mytrainingaux(f,Y,par):
 	return clf
 
 # Prediction function
-def myprediction(f, reg):
-	Ypred = reg.predict(f)
+def myprediction(f, clf):
+	Ypred = clf.predict(f)
 	return Ypred
