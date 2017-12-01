@@ -13,8 +13,11 @@ import unicodedata
 
 # Auxiliary content
 vowels = "aeiouy"
-def normalize(word):
-	return str(unicodedata.normalize('NFKD', word).encode('ascii', 'ignore'), 'utf-8').strip('\n')
+def normalize(string):
+	return str(unicodedata.normalize('NFKD', string).encode('ascii', 'ignore'), 'utf-8')
+
+def remove_artifacts(string):
+	return string.strip('\n')
 
 
 # Features
@@ -61,9 +64,10 @@ def features(X):
 	F = np.zeros((len(X),len(feature_array)))
 
 	for x in range(len(X)):
+		word = remove_artifacts(X[x])
 		for i in range(len(feature_array)):
 			feature = feature_array[i]
-			F[x,i] = feature(X[x])
+			F[x,i] = feature(word)
 
 	return F
 
