@@ -14,7 +14,7 @@ import unicodedata
 # Auxiliary content
 vowels = "aeiouy"
 def normalize(word):
-	return str(unicodedata.normalize('NFKD', word).encode('ascii', 'ignore'), 'utf-8')
+	return str(unicodedata.normalize('NFKD', word).encode('ascii', 'ignore'), 'utf-8').strip('\n')
 
 
 # Features
