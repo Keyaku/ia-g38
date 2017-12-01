@@ -43,17 +43,17 @@ def count_character_occurrences(word):
 
 
 def features(X):
-	func_array = [
+	feature_array = [
 		count_characters,
 		count_vowels,
-		count_character_occurrences
+		count_character_occurrences,
 	]
 
-	F = np.zeros((len(X),5))
+	F = np.zeros((len(X),len(feature_array)))
 
 	for x in range(len(X)):
-		for i in range(len(func_array)):
-			feature = func_array[i]
+		for i in range(len(feature_array)):
+			feature = feature_array[i]
 			F[x,i] = feature(X[x])
 
 	return F
