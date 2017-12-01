@@ -11,7 +11,8 @@ from sklearn.model_selection import cross_val_score
 import unicodedata
 
 
-# Auxiliary functions
+# Auxiliary content
+vowels = "aeiouy"
 def normalize(word):
 	return str(unicodedata.normalize('NFKD', word).encode('ascii', 'ignore'), 'utf-8')
 
@@ -22,7 +23,6 @@ def count_characters(word):
 
 
 def count_vowels(word):
-	vowels = "aeiouy"
 	nword = normalize(word)
 	count = len([c for c in nword if c in vowels])
 
