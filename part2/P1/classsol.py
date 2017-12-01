@@ -14,7 +14,7 @@ import unicodedata
 
 # Auxiliary functions
 def normalize(word):
-	return str(unicodedata.normalize('NFKD', word).encode('ascii', 'ignore'))
+	return str(unicodedata.normalize('NFKD', word).encode('ascii', 'ignore'), 'utf-8')
 
 
 # Features
@@ -41,9 +41,10 @@ def count_accent_symbols(word):
 
 def count_character_occurrences(word):
 	counted = []
+	nword = normalize(word)
 
-	for c in word:
-		if c not in counted and word.count(c) > 1:
+	for c in nword:
+		if c not in counted and nword.count(c) > 1:
 			counted += [c]
 
 	return len(counted)
