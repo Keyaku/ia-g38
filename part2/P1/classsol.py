@@ -70,25 +70,15 @@ def features(X):
 
 # Training functions
 def mytraining(f,Y):
-	clf = tree.DecisionTreeClassifier(min_samples_split=8) # TODO: use mytrainingaux()
+	clf = tree.DecisionTreeClassifier(min_samples_split=8)
+	#clf = neighbors.KNeighborsClassifier(n_neighbors = 2, weights='distance')
+	#clf = neighbors.KNeighborsClassifier(n_neighbors = 2, weights='uniform')
+	#clf = neighbors.KNeighborsClassifier(n_neighbors = 3, weights='distance')
+	#clf = neighbors.KNeighborsClassifier(n_neighbors = 3, weights='uniform')
+	#clf = linear_model.RidgeClassifier(alpha = 0.1)
 	clf = clf.fit(f, Y)
 	return clf
 
-
-def mytrainingaux(f,Y,par):
-	# TODO: use different sklearn algorithms (neighbors, datasets, tree, linear_model)
-	# neighbors.KNeighborsClassifier(n_neighbors, weights=weights)
-	# n_neighbors= 2 or 3
-	# weights = 'distance'
-	# weights = 'uniform'
-
-	# datasets.????
-
-	# tree.DecisionTreeClassifier(min_samples_split=min_samples_split)
-	# min_samples_split= 8
-
-	# linear_model.RidgeClassifier(alpha)
-	return clf
 
 # Prediction function
 def myprediction(f, clf):
