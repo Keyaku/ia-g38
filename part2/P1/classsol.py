@@ -70,7 +70,7 @@ def features(X):
 
 # Training functions
 def mytraining(f,Y):
-	clf = tree.DecisionTreeClassifier(min_samples_split=8)
+	clf = tree.DecisionTreeClassifier(min_samples_split=8, criterion='entropy', splitter='best')
 	#clf = neighbors.KNeighborsClassifier(n_neighbors = 2, weights='distance')
 	#clf = neighbors.KNeighborsClassifier(n_neighbors = 2, weights='uniform')
 	#clf = neighbors.KNeighborsClassifier(n_neighbors = 3, weights='distance')
