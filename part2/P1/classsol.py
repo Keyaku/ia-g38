@@ -11,23 +11,24 @@ from sklearn.model_selection import cross_val_score
 import re
 import unicodedata
 
+
 # Auxiliary functions
 def normalize(word):
 	return str(unicodedata.normalize('NFKD', word).encode('ascii', 'ignore'))
+
 
 # Features
 def count_characters(word):
 	return len(normalize(word))
 
+
 def count_vowels(word):
 	vowels = "aeiouy"
 	nword = normalize(word)
-	count = 0
+	count = len([c for c in nword if c in vowels])
 
-	for c in vowels:
-		count += nword.count(c)
-	
 	return count
+
 
 def count_accent_symbols(word):
 	symbols = re.findall('[^\w]', word, re.A)
@@ -36,6 +37,7 @@ def count_accent_symbols(word):
 		symbols.remove('\n')
 
 	return len(symbols)
+
 
 def count_character_occurrences(word):
 	counted = []
@@ -46,12 +48,14 @@ def count_character_occurrences(word):
 
 	return len(counted)
 
+
 def count_alpha(word):
 	count = len(word)
 	digits = re.findall(r'\d+', word)
 	if len(digits) > 0:
 		count -= len(digits[0])
 	return count
+
 
 def features(X):
 
@@ -64,6 +68,7 @@ def features(X):
 		F[x,4] = count_alpha(X[x])
 
 	return F
+
 
 # Training functions
 def mytraining(f,Y):
