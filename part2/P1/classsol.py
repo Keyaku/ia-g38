@@ -12,7 +12,7 @@ import unicodedata
 
 
 # Auxiliary content
-vowels = "aeiouy"
+vowels = "aeiou"
 def normalize(string):
 	return str(unicodedata.normalize('NFKD', string).encode('ascii', 'ignore'), 'utf-8')
 
