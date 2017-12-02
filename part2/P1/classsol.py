@@ -33,7 +33,7 @@ def count_vowels(word):
 	return count
 
 
-def count_character_occurrences(word):
+def count_repeated_characters(word):
 	counted = []
 
 	for c in word:
@@ -56,7 +56,7 @@ def features(X):
 	feature_array = [
 		count_characters,
 		count_vowels,
-		count_character_occurrences,
+		count_repeated_characters,
 		sum_characters,
 	]
 
