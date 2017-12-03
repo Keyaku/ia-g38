@@ -52,12 +52,39 @@ def sum_characters(word):
 	return count
 
 
+def order(word): # weights each character according to its position
+	count = 0
+
+	for i,c in enumerate(word):
+		count += (ord(c) - ord('a')) * (i+1)
+
+	return count
+
+
+# FIXME: new features
+def count_consonant_vowel_pair(word):
+	count = 0
+
+	for i in range(1, len(word)):
+		c1 = word[i-1]
+		c2 = word[i]
+
+		if c1 not in vowels and c2 in vowels:
+			count += 1
+		elif c1 in vowels and c2 not in vowels:
+			count -= 1
+
+	return count
+
+
 def features(X):
 	feature_array = [
 		count_characters,
 		count_vowels,
 		count_repeated_characters,
 		sum_characters,
+		order
+		#count_consonant_vowel_pair 
 	]
 
 	F = np.zeros((len(X),len(feature_array)))
@@ -73,7 +100,7 @@ def features(X):
 
 # Training functions
 def mytraining(f,Y):
-	clf = tree.DecisionTreeClassifier(min_samples_split=8, criterion='entropy', splitter='best')
+	clf = tree.DecisionTreeClassifier(min_samples_split=2) #min_samples_split=8
 	#clf = neighbors.KNeighborsClassifier(n_neighbors = 2, weights='distance')
 	#clf = neighbors.KNeighborsClassifier(n_neighbors = 2, weights='uniform')
 	#clf = neighbors.KNeighborsClassifier(n_neighbors = 3, weights='distance')
