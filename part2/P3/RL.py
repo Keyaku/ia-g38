@@ -90,11 +90,11 @@ class finiteMDP:
 					tree[2].append([ns,tree[1]*p,[]])
 					self.createTree( ns, pol, tree[2][-1], depth-1 )
 
-#		if depth == 1:
-#			p = 0
-#			for ss in tree[2]:
-#				p = p + np.log(ss[1]+1e-16) * ss[1]
-#			tree[1] = -1
+		#if depth == 1:
+		#	p = 0
+		#	for ss in tree[2]:
+		#		p = p + np.log(ss[1]+1e-16) * ss[1]
+		#	tree[1] = -1
 
 		return tree
 
