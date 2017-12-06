@@ -4,31 +4,42 @@ import numpy as np
 from sklearn import datasets, tree, linear_model
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.model_selection import GridSearchCV
-import timeit
+import time
+from sklearn.svm import SVR
 
 
 
 def mytraining(X, Y):
-	reg = linear_model.LassoCV()
 
+	#Declaracao dos parametros
 	range = [1.0, 0.8, 0.6, 0.4, 0.2, 0.1]
 
-	tuned_parameters = [
+	"""tuned_parameters = [
 		{'kernel': ['linear']},
 		{'kernel': ['rbf'], 'alpha' :  range, 'gamma' : range},
 		{'kernel' : ['polynomial'], 'alpha' : range, 'gamma' : range},
 		{'kernel' : ['cosine']}
+	]"""
+
+	tuned_parameters = [
+		{'kernel' : ['rbf'], 'gamma' : range, 'C': [1, 10, 100, 1000]}
 	]
 
 	if allPositive(X, Y):
 		tuned_parameters += [{'kernel' : ['chi2'], 'gamma' : range }]
 
 
+	Y = Y.ravel()
+	reg = SVR()
 	#reg = KernelRidge()
 	reg.fit(X, Y)
+
+
 	#clf = GridSearchCV(KernelRidge(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
-	#clf.fit(X, Y)
-	#reg = clf.best_estimator_
+	clf = GridSearchCV(SVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
+
+	clf.fit(X, Y)
+	reg = clf.best_estimator_
 
 	return reg
 
