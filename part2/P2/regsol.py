@@ -6,8 +6,9 @@ from sklearn.kernel_ridge import KernelRidge
 from sklearn.model_selection import GridSearchCV
 import time
 from sklearn.svm import SVR
+import warnings
 
-
+warnings.filterwarnings("ignore")
 
 def mytraining(X, Y):
 
@@ -25,11 +26,7 @@ def mytraining(X, Y):
 		{'kernel' : ['rbf'], 'gamma' : range, 'C': [1, 10, 100, 1000]}
 	]
 
-	if allPositive(X, Y):
-		tuned_parameters += [{'kernel' : ['chi2'], 'gamma' : range }]
 
-
-	Y = Y.ravel()
 	reg = SVR()
 	#reg = KernelRidge()
 	reg.fit(X, Y)
@@ -37,7 +34,6 @@ def mytraining(X, Y):
 
 	#clf = GridSearchCV(KernelRidge(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
 	clf = GridSearchCV(SVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
-
 	clf.fit(X, Y)
 	reg = clf.best_estimator_
 
@@ -50,12 +46,6 @@ def myprediction(X, reg):
 
 	return Ypred
 
-
-#----------------------------------------------------------------------------------------------------------------------#
-def allPositive(X, Y):
-
-	return not (any(x <= 0 for x in X) or any(y <= 0 for y in Y))
-
 # ----------------------------------------------------------------------------------------------------------------------#
 
 # Important kernel factors:
@@ -64,11 +54,6 @@ def allPositive(X, Y):
 	# Computes the exponential chi-squared kernel X and Y.
 	# The chi-squared kernel is computed between each pair of rows in X and Y. X and Y have to be non-negative.
 	# This kernel is most commonly applied to histograms.
-
-	# Sigmoid
-	# The function sigmoid_kernel computes the sigmoid kernel between two vectors.
-	# The sigmoid +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++kernel is also known as hyperbolic tangent, or Multilayer Perceptron
-	# (because, in the neural network field, it is often used as neuron activation function).
 
 # Gamma:
 # To "raise" the points you use the RBF kernel, gamma controls the shape of the "peaks" where you raise the points.
