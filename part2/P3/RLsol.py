@@ -58,7 +58,8 @@ class myRL:
 				action = int(ele[1])
 				next_state = int(ele[2])
 				reward = ele[3]
-				tempQ[state, action] = tempQ[state, action] + alpha * (reward + self.gamma * max(tempQ[next_state, :]) - tempQ[state, action])
+
+				tempQ[state, action] += alpha * (reward + self.gamma * max(tempQ[next_state, :]) - tempQ[state, action])
 
 			err = np.linalg.norm(self.Q-tempQ)
 			self.Q = np.copy(tempQ)
