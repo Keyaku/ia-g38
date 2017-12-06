@@ -25,7 +25,7 @@ def Q2pol(Q, eta=5):
 #  each action will be tried an infinite number of times, thus ensuring optimal actions are discovered.
 # -soft - very similar to  -greedy. The best action is selected with probability 1 - and the rest of the time a random action
 #  is chosen uniformly.
-#   softmax - one drawback of -greedy and -soft is that they select random actions uniformly.
+# -softmax - one drawback of -greedy and -soft is that they select random actions uniformly.
 #  The worst possible action is just as likely to be selected as the second best.
 #  Softmax remedies this by assigning a rank or weight to each of the actions, according to their action-value estimate.
 #  A random action is selected with regards to the weight associated with each action,
@@ -35,7 +35,7 @@ def Q2pol(Q, eta=5):
 # Para isso implementar o algoritmo Q-learning que a partir de uma trajetoria
 # recebida calcule os valores Q para cada
 # gamma = discount factor 0 < gamma < 1
-# alpha = learning rate  0 < alpha < 1
+# alpha = learning rate   0 < alpha < 1
 class myRL:
 
 	def __init__(self, nS, nA, gamma):
@@ -48,11 +48,21 @@ class myRL:
 	# Trace e' uma matriz
 	def traces2Q(self, trace):
 		self.Q = np.zeros((self.nS, self.nA))
+		tempQ  = np.zeros((self.nS, self.nA))
 
+		alpha = 1
 		#Vai convergir para um numero
 		while True:
 			for ele in trace:
-				self.Q[int(ele[0]), int(ele[1])] = self.Q[int(ele[0]), int(ele[1])] + 1 * (ele[3] + self.gamma * max(self.Q[int(ele[2]), :]) - self.Q[int(ele[0]), int(ele[1])])
+				state  = int(ele[0])
+				action = int(ele[1])
+				next_state = int(ele[2])
+				reward = ele[3]
+				tempQ[state, action] = tempQ[state, action] + alpha * (reward + self.gamma * max(tempQ[next_state, :]) - tempQ[state, action])
 
+			err = np.linalg.norm(self.Q-tempQ)
+			self.Q = np.copy(tempQ)
+			if err<1e-2:
+				break
 
-			return self.Q
+		return self.Q
