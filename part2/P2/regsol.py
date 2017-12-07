@@ -27,14 +27,19 @@ def mytraining(X, Y):
 	]"""
 
 
+	#Metodos a serem utilizados
 	#reg = SVR()
 	reg = KernelRidge()
+
+	#Fit do metodo
 	reg.fit(X, Y)
 
-
+	#Aplicacao da validacao cruzada
 	clf = GridSearchCV(KernelRidge(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
 	#clf = GridSearchCV(SVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
 	clf.fit(X, Y)
+
+	#Buscar o melhor estimador para a nossa regressao
 	reg = clf.best_estimator_
 
 	return reg
