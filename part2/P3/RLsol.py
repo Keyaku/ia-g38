@@ -2,11 +2,12 @@
 
 import numpy as np
 
-# Para calcular a trajetoria e' necessario uma politica
-
+# Calculo da politica
 def Q2pol(Q, eta=5):
 	pol = np.zeros(Q.shape)
 
+	# Em cada linha da matriz Q escolhemos o maior elemento
+	# Na posicao do maior elemento coloca-se "1" na matriz pol
 	for line,values in enumerate(Q):
 		idx = np.argmax(values)
 		pol[line, idx] = 1
