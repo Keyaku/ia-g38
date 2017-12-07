@@ -1,11 +1,5 @@
 # 84738 Lucia Lisboa - 77906 Antonio Sarmento - 38
 
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Oct 16 20:31:54 2017
-
-@author: mlopes
-"""
 import numpy as np
 
 # Para calcular a trajetoria e' necessario uma politica
@@ -19,16 +13,15 @@ def Q2pol(Q, eta=5):
 
 	return pol
 
-
-# Para isso implementar o algoritmo Q-learning que a partir de uma trajetoria
-# recebida calcule os valores Q para cada
+#--------------------------------------------------------------------------------------------------------------------
+# Implementacao do algoritmo Q-learning
 # gamma = discount factor 0 < gamma < 1
 # alpha = learning rate   0 < alpha < 1
 class myRL:
 
 	def __init__(self, nS, nA, gamma):
-		self.nS = nS  # numero de linhas - numero de estados
-		self.nA = nA  # numero de colunas - numero de accoes
+		self.nS = nS  # numero de linhas -> numero de estados
+		self.nA = nA  # numero de colunas -> numero de accoes
 		self.gamma = gamma
 		self.Q = np.zeros((nS,nA))
 
@@ -51,6 +44,7 @@ class myRL:
 
 			err = np.linalg.norm(self.Q-tempQ)
 			self.Q = np.copy(tempQ)
+
 			if err<1e-2:
 				break
 
