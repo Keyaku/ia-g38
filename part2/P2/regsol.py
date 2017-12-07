@@ -1,7 +1,5 @@
 # 84738 Lucia Lisboa - 77906 Antonio Sarmento - 38
 
-import numpy as np
-from sklearn import datasets, tree, linear_model
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.model_selection import GridSearchCV
 import time
@@ -27,7 +25,7 @@ def mytraining(X, Y):
 	]"""
 
 	# Metodos a serem utilizados
-	# reg = SVR()
+	#reg = SVR()
 	reg = KernelRidge()
 
 	# Fit do metodo
@@ -35,7 +33,7 @@ def mytraining(X, Y):
 
 	# Aplicacao da validacao cruzada
 	clf = GridSearchCV(KernelRidge(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
-	# clf = GridSearchCV(SVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
+	#clf = GridSearchCV(SVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
 	clf.fit(X, Y)
 
 	# Buscar o melhor estimador para a nossa regressao
