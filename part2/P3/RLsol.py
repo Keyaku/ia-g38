@@ -11,7 +11,12 @@ import numpy as np
 # Para calcular a trajetoria e' necessario uma politica
 
 def Q2pol(Q, eta=5):
-	# TODO
+	pol = np.zeros(Q.shape)
+
+	for line,values in enumerate(Q):
+		idx = np.argmax(values)
+		pol[line, idx] = 1
+
 	return pol
 
 # Action Selection Policies
