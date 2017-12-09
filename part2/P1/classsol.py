@@ -145,7 +145,7 @@ def mytraining(f, Y):
 	num_neighbors = [5]
 	weights = ['uniform']
 	tuned_parameters = [
-		{'n_neighbors' : num_neighbors, 'weights'=weights}
+		{'n_neighbors' : num_neighbors, 'weights':weights}
 	]
 	'''
 
