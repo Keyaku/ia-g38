@@ -1,4 +1,6 @@
-# 84738 Lucia Lisboa - 77906 Antonio Sarmento - 38
+# 84738 Lucia Lisboa
+# 77906 Antonio Sarmento
+# Grupo: 38
 
 import numpy as np
 
@@ -28,14 +30,17 @@ class myRL:
 
 	# Calcular os valores de Q para cada accao
 	# Trace e' uma matriz
+	# Cada linha = [estado inicial acao estado final recompensa]
 	def traces2Q(self, trace):
 		self.Q = np.zeros((self.nS, self.nA))
 		tempQ  = np.zeros((self.nS, self.nA))
 
 		alpha = 0.1
+
 		#Vai convergir para um numero
 		while True:
 			for ele in trace:
+
 				state  = int(ele[0])
 				action = int(ele[1])
 				next_state = int(ele[2])
@@ -43,10 +48,10 @@ class myRL:
 
 				tempQ[state, action] += alpha * (reward + self.gamma * max(tempQ[next_state, :]) - tempQ[state, action])
 
-			err = np.linalg.norm(self.Q-tempQ)
+			dif = np.linalg.norm(self.Q-tempQ)
 			self.Q = np.copy(tempQ)
 
-			if err<1e-2:
+			if dif < 1e-2:
 				break
 
 		return self.Q

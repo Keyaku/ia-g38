@@ -1,4 +1,6 @@
-# 84738 Lucia Lisboa - 77906 Antonio Sarmento - 38
+# 84738 Lucia Lisboa
+# 77906 Antonio Sarmento
+# Grupo: 38
 
 import numpy as np
 from sklearn import tree
@@ -15,6 +17,7 @@ def normalize(string):
 	return str(unicodedata.normalize('NFKD', string).encode('ascii', 'ignore'), 'utf-8')
 
 
+# --------------------------------------------------------------------------------------------------------
 # Removes artifacts from a string. In this case, only removes linefeed
 def remove_artifacts(string):
 	return string.strip('\n')
@@ -29,6 +32,7 @@ def count_characters(word):
 	return len(word)
 
 
+# --------------------------------------------------------------------------------------------------------
 # Returns the number of vowels in a (normalized) word.
 def count_vowels(word):
 	vowels = "aeiou"
@@ -38,6 +42,7 @@ def count_vowels(word):
 	return count
 
 
+# --------------------------------------------------------------------------------------------------------
 # Returns the number of repeated characters in a word.
 def count_repeated_characters(word):
 	counted = []
@@ -49,6 +54,7 @@ def count_repeated_characters(word):
 	return len(counted)
 
 
+# -------------------------------------------------------------------------------------------------------
 # Returns the sum of all characters, where a = 0, b = 1, ..., z = 25
 def sum_characters(word):
 	count = 0
@@ -59,17 +65,19 @@ def sum_characters(word):
 	return count
 
 
+# -------------------------------------------------------------------------------------------------------
 # Returns the "weight" of a word, meaning: it'll sum all the characters according to their index
 # in that word.
 def order(word):
 	count = 0
 
-	for i,c in enumerate(word):
+	for i, c in enumerate(word):
 		count += (ord(c) - ord('a')) * i
 
 	return count
 
 
+# -------------------------------------------------------------------------------------------------------
 # Assembles all our features and executes them on each word given via the list X.
 def features(X):
 	feature_array = [
@@ -80,28 +88,30 @@ def features(X):
 		order
 	]
 
-	F = np.zeros((len(X),len(feature_array)))
+	F = np.zeros((len(X), len(feature_array)))
 
 	for x in range(len(X)):
 		word = remove_artifacts(X[x]).lower()
 
 		for i in range(len(feature_array)):
 			feature = feature_array[i]
-			F[x,i] = feature(word)
+			F[x, i] = feature(word)
 
 	return F
+
 
 ##########################
 ### Training functions ###
 ##########################
 
 # Uses the appropriate Classifier method to process words.
-def mytraining(f,Y):
-	clf = tree.DecisionTreeClassifier(min_samples_split=2) #min_samples_split=8
+def mytraining(f, Y):
+	clf = tree.DecisionTreeClassifier()  # min_samples_split=8
 	clf = clf.fit(f, Y)
 	return clf
 
 
+# -------------------------------------------------------------------------------------------------
 # Simply calls the prediction logic from our training method.
 def myprediction(f, clf):
 	Ypred = clf.predict(f)

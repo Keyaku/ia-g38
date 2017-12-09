@@ -1,4 +1,6 @@
-# 84738 Lucia Lisboa - 77906 Antonio Sarmento - 38
+# 84738 Lucia Lisboa
+# 77906 Antonio Sarmento
+# Grupo: 38
 
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.model_selection import GridSearchCV
@@ -32,7 +34,7 @@ def mytraining(X, Y):
 	reg.fit(X, Y)
 
 	# Aplicacao da validacao cruzada
-	clf = GridSearchCV(KernelRidge(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
+	clf = GridSearchCV(KernelRidge(), tuned_parameters, cv = 5, scoring ='neg_mean_squared_error')
 	#clf = GridSearchCV(SVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
 	clf.fit(X, Y)
 
