@@ -15,4 +15,4 @@ install-deps:
 	pip3 install numpy scipy scikit-learn matplotlib joblib
 
 zip:
-	zip -v $(ZIPFILE) *.pdf *.py
+	zip -v $(ZIPFILE) T038.pdf P1/classsol.py P2/regsol.py P3/RLsol.py
