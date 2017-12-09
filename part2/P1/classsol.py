@@ -101,7 +101,10 @@ def features(X):
 ##########################
 ### Training functions ###
 ##########################
+import warnings
+warnings.filterwarnings("ignore")
 
+from sklearn.model_selection import GridSearchCV
 # Uses the appropriate Classifier method to process words.
 def mytraining(f, Y):
 	'''
@@ -114,8 +117,25 @@ def mytraining(f, Y):
 		min_impurity_decrease=0.0,
 		presort=False,
 	'''
-	clf = tree.DecisionTreeClassifier(criterion='entropy')
-	clf = clf.fit(f, Y)
+
+	# Let's use Cross-Validation, shall we?
+	# Declaracao dos parametros
+	split = [2, 3, 4, 5, 6, 7, 8]
+
+	tuned_parameters = [
+		{'criterion' : ['gini', 'entropy'], 'min_samples_split' : split},
+	]
+
+	# Metodos a serem utilizados
+	clf = tree.DecisionTreeClassifier()
+
+	# Aplicacao da validacao cruzada
+	cv = GridSearchCV(clf, tuned_parameters, cv = 5, scoring ='neg_mean_squared_error')
+	cv.fit(f, Y)
+
+	# Buscar o melhor estimador para a nossa regressao
+	clf = cv.best_estimator_
+
 	return clf
 
 
