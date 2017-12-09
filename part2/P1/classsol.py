@@ -104,9 +104,10 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from sklearn import tree
-from sklearn.model_selection import GridSearchCV
 from sklearn import linear_model
 from sklearn import neighbors
+
+from sklearn.model_selection import GridSearchCV
 
 # Uses the appropriate Classifier method to process words.
 def mytraining(f, Y):
@@ -150,7 +151,7 @@ def mytraining(f, Y):
 	'''
 
 	# Aplicacao da validacao cruzada
-	cv = GridSearchCV(clf, tuned_parameters, cv = 5, scoring ='neg_mean_squared_error')
+	cv = GridSearchCV(clf, tuned_parameters, cv = 5, scoring = 'accuracy')
 	cv.fit(f, Y)
 
 	# Buscar o melhor estimador para a nossa regressao
