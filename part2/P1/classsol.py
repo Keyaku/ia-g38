@@ -1,7 +1,6 @@
 # 84738 Lucia Lisboa # 77906 Antonio Sarmento # Grupo 38
 
 import numpy as np
-from sklearn import tree
 
 import unicodedata
 
@@ -104,7 +103,11 @@ def features(X):
 import warnings
 warnings.filterwarnings("ignore")
 
+from sklearn import tree
 from sklearn.model_selection import GridSearchCV
+from sklearn import linear_model
+from sklearn import neighbors
+
 # Uses the appropriate Classifier method to process words.
 def mytraining(f, Y):
 	'''
@@ -119,15 +122,32 @@ def mytraining(f, Y):
 	'''
 
 	# Let's use Cross-Validation, shall we?
-	# Declaracao dos parametros
-	split = [2, 3, 4, 5, 6, 7, 8]
 
+	'''
+	# RidgeClassifier
+	clf = linear_model.RidgeClassifier()
+	precision = [1.0, 0.8, 0.6, 0.4, 0.2, 0.1]
+	tuned_parameters = [
+		{'alpha' : precision},
+	]
+	'''
+
+	# DecisionTreeClassifier
+	clf = tree.DecisionTreeClassifier()
+	split = [2, 3, 4, 5, 6, 7, 8]
 	tuned_parameters = [
 		{'criterion' : ['gini', 'entropy'], 'min_samples_split' : split},
 	]
 
-	# Metodos a serem utilizados
-	clf = tree.DecisionTreeClassifier()
+	'''
+	# KNeighborsClassifier
+	clf = neighbors.KNeighborsClassifier()
+	num_neighbors = [5]
+	weights = ['uniform']
+	tuned_parameters = [
+		{'n_neighbors' : num_neighbors, 'weights'=weights}
+	]
+	'''
 
 	# Aplicacao da validacao cruzada
 	cv = GridSearchCV(clf, tuned_parameters, cv = 5, scoring ='neg_mean_squared_error')
