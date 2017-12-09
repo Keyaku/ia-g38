@@ -11,17 +11,17 @@ warnings.filterwarnings("ignore")
 def mytraining(X, Y):
 
 	# Declaracao dos parametros
-	range = [1.0, 0.8, 0.6, 0.4, 0.2, 0.1]
+	precision = [1.0, 0.8, 0.6, 0.4, 0.2, 0.1]
 
 	tuned_parameters = [
 		{'kernel': ['linear']},
-		{'kernel': ['rbf'], 'alpha': range, 'gamma': range},
-		{'kernel': ['polynomial'], 'alpha': range, 'gamma': range},
+		{'kernel': ['rbf'], 'alpha': precision, 'gamma': precision},
+		{'kernel': ['polynomial'], 'alpha': precision, 'gamma': precision},
 		{'kernel': ['cosine']}
 	]
 
 	"""tuned_parameters = [
-		{'kernel' : ['rbf'], 'gamma' : range, 'C': [1, 10, 100, 1000]}
+		{'kernel' : ['rbf'], 'gamma' : precision, 'C': [1, 10, 100, 1000]}
 	]"""
 
 	# Metodos a serem utilizados
