@@ -142,10 +142,10 @@ def mytraining(f, Y):
 	'''
 	# KNeighborsClassifier
 	clf = neighbors.KNeighborsClassifier()
-	num_neighbors = [5]
-	weights = ['uniform']
+	n_neighbors = [3, 4, 5, 6, 7]
+	weights = ['uniform', 'distance']
 	tuned_parameters = [
-		{'n_neighbors' : num_neighbors, 'weights':weights}
+		{'n_neighbors' : n_neighbors, 'weights':weights}
 	]
 	'''
 
