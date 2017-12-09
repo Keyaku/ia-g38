@@ -1,6 +1,4 @@
-# 84738 Lucia Lisboa
-# 77906 Antonio Sarmento
-# Grupo: 38
+# 84738 Lucia Lisboa # 77906 Antonio Sarmento # Grupo 38
 
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.model_selection import GridSearchCV
