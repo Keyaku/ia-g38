@@ -2,6 +2,10 @@
 *outhyp
 *.diff
 
+# OS stuff
+*.DS_Store
+*Thumbs.db
+
 # PyCharm work files
 .idea
 
