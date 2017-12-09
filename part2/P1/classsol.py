@@ -106,7 +106,17 @@ def features(X):
 
 # Uses the appropriate Classifier method to process words.
 def mytraining(f, Y):
-	clf = tree.DecisionTreeClassifier()  # min_samples_split=8
+	'''
+	These are our DecisionTreeClassifier parameters as it stands:
+		criterion='entropy',
+		splitter='best',
+		min_samples_split=2,
+		min_samples_leaf=1,
+		min_weight_fraction_leaf=0.0,
+		min_impurity_decrease=0.0,
+		presort=False,
+	'''
+	clf = tree.DecisionTreeClassifier(criterion='entropy')
 	clf = clf.fit(f, Y)
 	return clf
 
